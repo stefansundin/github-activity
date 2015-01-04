@@ -11,8 +11,6 @@ pid app_path+'/tmp/unicorn.pid'
 stdout_path app_path+'/log/unicorn.log'
 
 preload_app true
-#GC.respond_to?(:copy_on_write_friendly=) &&
-#  GC.copy_on_write_friendly = true
 
 Dir[app_path+'/config/initializers/*.rb'].each { |f| require f }
 
