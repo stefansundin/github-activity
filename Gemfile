@@ -8,4 +8,3 @@ gem 'sinatra'
 gem 'redis'
 gem 'httparty'
 gem 'dotenv'
-

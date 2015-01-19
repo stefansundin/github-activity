@@ -12,9 +12,6 @@ stdout_path app_path+'/log/unicorn.log'
 
 preload_app true
 
-Dir[app_path+'/config/initializers/*.rb'].each { |f| require f }
-
 after_fork do |server, worker|
   $redis.client.reconnect
 end
-
