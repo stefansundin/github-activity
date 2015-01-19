@@ -1,4 +1,3 @@
-require 'sinatra'
 require './app'
 
-run App
+run Sinatra::Application.new

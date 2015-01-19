@@ -1,0 +1,5 @@
+<h1>GitHub activity rss feed</h1>
+<p><form action='/go' method='get'>username: <input type='text' name='username' placeholder='github username' value='stefansundin'> <input type='submit' value='Go'></form></p>
+<p><a href='/flush'>flush cache</a></p>
+<p>authenticated? <%= $redis.exists('access_token') ? $redis.get('login') : "<a href='/auth'>no</a></p>" %>
+<p>ratelimit: <%= GithubParty.ratelimit.to_json %></p>
