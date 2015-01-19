@@ -1,18 +1,19 @@
-require 'sinatra/base'
+require './config/application'
 require './github_party'
-
-app_path = File.expand_path(File.dirname(__FILE__))
-Dir["#{app_path}/config/initializers/*.rb"].each { |f| require f }
+require 'sinatra/base'
 
 def format_date(date)
   date.gsub('T',' ').gsub('Z','')
 end
 
 class App < Sinatra::Base
+  use Airbrake::Sinatra
+  enable :raise_errors
+
   get '/' do
     "<h1>GitHub activity rss feed</h1>"+
     "<p><form action='/go' method='get'>username: <input type='text' name='username' placeholder='github username' value='stefansundin'> <input type='submit' value='Go'></form></p>"+
-    "<p><a href='/stefansundin.xml'>stefansundin</a> <a href='/flush'>flush cache</a></p>"+
+    "<p><a href='/flush'>flush cache</a></p>"+
     "<p>authenticated? "+($redis.exists('access_token') ? $redis.get('login') : "<a href='/auth'>no</a></p>") +
     "<p>ratelimit: #{GithubParty.ratelimit.to_json}</p>"
   end
@@ -85,7 +86,7 @@ eos
   end
 
   get '/flushall' do
-    if ENV['RACK_ENV'] == 'production'
+    if self.class.environment == :production
       return 'forbidden in production'
     end
     $redis.flushall

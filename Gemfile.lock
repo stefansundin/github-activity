@@ -1,12 +1,17 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    airbrake (4.1.0)
+      builder
+      multi_json
+    builder (3.2.2)
     dotenv (1.0.2)
     httparty (0.13.3)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     json (1.8.1)
     kgio (2.9.2)
+    multi_json (1.10.1)
     multi_xml (0.5.5)
     rack (1.5.2)
     rack-protection (1.5.3)
@@ -27,6 +32,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  airbrake
   dotenv
   httparty
   rack (= 1.5.2)

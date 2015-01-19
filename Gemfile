@@ -7,4 +7,8 @@ gem 'unicorn'
 gem 'sinatra'
 gem 'redis'
 gem 'httparty'
-gem 'dotenv'
+gem 'airbrake'
+
+group :development do
+  gem 'dotenv'
+end
