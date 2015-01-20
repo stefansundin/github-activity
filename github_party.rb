@@ -110,7 +110,7 @@ class GithubParty
     opts = {
       query: {},
       headers: {
-        'User-Agent' => 'github_activity'
+        'User-Agent' => 'github-activity'
       }
     }
     access_token = $redis.get('access_token')
