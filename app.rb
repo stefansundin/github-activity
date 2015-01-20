@@ -4,15 +4,17 @@ require './github_party'
 require 'erb'
 
 def format_date(date)
-  date.gsub('T',' ').gsub('Z','')
+  date.gsub('T',' ').gsub('Z',' UTC')
 end
 
 
 get '/' do
+  @ratelimit = GithubParty.ratelimit
   erb :index
 end
 
 get '/go' do
+  params[:username] = 'stefansundin' if params[:username] == ''
   redirect "/#{params[:username]}.xml"
 end
 
@@ -20,6 +22,7 @@ get '/:user.xml' do
   client = GithubParty.new
   @user = params[:user]
   gists = client.gists @user
+  return "Unfortunately there does not seem to be a user with the name #{@user}." if gists.nil?
 
   @gist_comments = gists.map do |gist|
     comments = client.gist_comments gist
@@ -27,7 +30,10 @@ get '/:user.xml' do
       [ gist['id'], comment ]
     end
   end.flatten(1)
-  @gist_comments.reject! { |id, c| c['user']['login'] == @user }
+
+  # remove your own comments, then sort
+  # c['user'] can be null, I think this is if a user was deleted
+  @gist_comments.reject! { |id, c| c['user']['login'] == @user rescue true }
   @gist_comments.sort_by! { |id, c| c['created_at'] }
   @gist_comments.reverse!
 
@@ -37,11 +43,9 @@ end
 
 get '/flush' do
   $redis.keys.each do |key|
-    if not %w[access_token login].include?(key)
-      $redis.del key
-    end
+    $redis.del key if key.start_with?('gist')
   end
-  redirect '/'
+  "Cache cleared"
 end
 
 get '/flushall' do
@@ -49,7 +53,6 @@ get '/flushall' do
     return 'forbidden in production'
   end
   $redis.flushall
-  redirect '/'
 end
 
 get '/auth' do

@@ -18,8 +18,10 @@ class GithubParty
       entries = []
       page = 1
       while true
-        r = self.class.get "/users/#{user}/gists?page=#{page}", @options
+        r = self.class.get "/users/#{URI.encode(user)}/gists?page=#{page}", @options
         self.class.process(r)
+        return nil if r.code == 404
+        raise self.class.error(r) if not r.success?
         break if r.parsed_response.count == 0
         entries = entries + r.parsed_response
         page += 1
@@ -48,6 +50,7 @@ class GithubParty
       while true
         r = self.class.get "#{gist['comments_url']}?page=#{page}", @options
         self.class.process(r)
+        raise self.class.error(r) if not r.success?
         break if r.parsed_response.count == 0
         comments = comments + r.parsed_response
         break if comments.count == gist['comments']
@@ -76,6 +79,7 @@ class GithubParty
     r = get '/user', options
     $redis.set 'login', r.parsed_response['login']
     process(r)
+    raise error(r) if not r.success?
   end
 
   def self.ratelimit
@@ -100,7 +104,6 @@ class GithubParty
       $redis.del 'access_token'
       raise "Access token #{r.request.options[:query][:access_token]} revoked!"
     end
-    raise self.class.error(r) if not r.success?
   end
 
   def self.options

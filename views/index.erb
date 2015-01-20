@@ -1,5 +1,88 @@
-<h1>GitHub activity rss feed</h1>
-<p><form action='/go' method='get'>username: <input type='text' name='username' placeholder='github username' value='stefansundin'> <input type='submit' value='Go'></form></p>
-<p><a href='/flush'>flush cache</a></p>
-<p>authenticated? <%= $redis.exists('access_token') ? $redis.get('login') : "<a href='/auth'>no</a></p>" %>
-<p>ratelimit: <%= GithubParty.ratelimit.to_json %></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base target="_blank">
+  <title>GitHub Activity RSS Feed</title>
+
+  <meta charset="utf-8">
+  <meta name="author" content="Stefan Sundin">
+  <meta name="description" content="AltDrag - Easily drag windows when pressing the alt key (Windows only).">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <link rel="icon" href="img/icon32.png">
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="https://stefansundin.github.io/css/main.css">
+  <link rel="alternate" href="https://github.com/stefansundin/github_activity/releases.atom" title="Release feed" />
+  <style type="text/css">
+  form {
+    display: inline-block;
+    width: 400px;
+  }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://cloud.githubusercontent.com/assets/1991151/13237/0679f730-9f19-11e4-9bea-1408fcba16cf.png" width="128" height="128" alt="Icon" itemprop="image">
+    <hgroup>
+      <h1 itemprop="name">GitHub Activity RSS Feed</h1>
+      <h2 itemprop="description">Subscribe to your gist comments</h2>
+    </hgroup>
+  </header>
+
+  <div class="buttons">
+    <div class="form-group">
+      <form class="form-horizontal" method="get" action="/go" target="_self">
+        <div class="col-sm-8"><input class="form-control" type="search" name="username" placeholder="Your GitHub username" pattern="[a-z0-9\-]+"></div>
+        <div class="col-sm-4"><input class="btn btn-primary" type="submit" value="Get RSS Feed"></div>
+      </form>
+      <script>
+      var form = document.getElementsByTagName('form')[0];
+      form.addEventListener('submit', function(e) {
+        var btn = form.getElementsByTagName('input')[1];
+        btn.value = 'Working';
+        // btn.disabled = true;
+      });
+      </script>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>About</h2>
+
+    <p>GitHub does not notify you when you receive comments on your gists. That's why I created this website, which gives you a convenient RSS feed you can subscribe to.</p>
+
+    <p>For now this feed only gives you comments on your gists. Later I might implement notifications when people commit to forks from your stuff, etc. Post ideas as issues <a href="https://github.com/stefansundin/github_activity">on GitHub</a>.</p>
+
+
+    <h2>Credits</h2>
+
+    <p>This page was created by Stefan Sundin.</p>
+
+    <p>You can <a href="https://stefansundin.github.io/">browse my other projects</a>, or <a href="https://stefansundin.com/">visit my personal website</a>.</p>
+
+
+    <h2>Danger Zone</h2>
+
+    <p>
+      Remaining ratelimit: <%= "%s / %s" % [@ratelimit[:remaining] || 'unknown', @ratelimit[:limit] || 'unknown'] %>.
+      <%= "Resets in %d min." % ((@ratelimit[:reset]-Time.now)/60) if @ratelimit[:reset] %>
+    </p>
+
+    <% if not $redis.exists('access_token') %>
+    <p>Not authenticated!</p>
+
+    <p><a class="btn btn-success" href="/auth"><span class="glyphicon glyphicon-user"></span> Authenticate</a></p>
+
+    <p>Authenticating gives you a lot higher ratelimit.</p>
+    <% end %>
+
+    <p><a class="btn btn-danger" href="/flush"><span class="glyphicon glyphicon-trash"></span> Flush cache</a></p>
+
+    <p>This button clears the redis cache. Only use in emergencies.</p>
+  </div>
+
+  <script src="https://stefansundin.github.io/js/ga.js"></script>
+</body>
+</html>
