@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <link rel="icon" href="img/icon32.png">
+  <link rel="icon" href="https://stefansundin.github.io/github_activity/img/icon32.png">
   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="https://stefansundin.github.io/css/main.css">
@@ -24,7 +24,7 @@
 </head>
 <body>
   <header>
-    <img src="https://cloud.githubusercontent.com/assets/1991151/13237/0679f730-9f19-11e4-9bea-1408fcba16cf.png" width="128" height="128" alt="Icon" itemprop="image">
+    <img src="https://stefansundin.github.io/github_activity/img/icon128.png" width="128" height="128" alt="Icon" itemprop="image">
     <hgroup>
       <h1 itemprop="name">GitHub Activity RSS Feed</h1>
       <h2 itemprop="description">Subscribe to your gist comments</h2>
@@ -73,7 +73,11 @@
     <% if not $redis.exists('access_token') %>
     <p>Not authenticated!</p>
 
+    <% if ENV['GITHUB_CLIENT_ID'] %>
     <p><a class="btn btn-success" href="/auth"><span class="glyphicon glyphicon-user"></span> Authenticate</a></p>
+    <% else %>
+    <p>Please configure the GitHub ENV variables to authenticate.</p>
+    <% end %>
 
     <p>Authenticating gives you a lot higher ratelimit.</p>
     <% end %>

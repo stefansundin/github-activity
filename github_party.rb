@@ -73,7 +73,7 @@ class GithubParty
               }, headers: {
                 'Accept' => 'application/json'
               })
-    raise error(r) if not r.success?
+    raise error(r) if not r.success? or r.parsed_response['error']
     $redis.set 'access_token', r.parsed_response['access_token']
 
     r = get '/user', options
