@@ -13,5 +13,5 @@ task :deploy do
 
   # tag and push new tag
   system "git tag -a -m \"Deploy #{hash}\" #{tag_name} #{hash}"
-  system "git push origin #{tag}"
+  system "git push origin #{tag_name}"
 end
