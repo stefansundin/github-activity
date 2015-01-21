@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.2.0'
+
 # newer rack has bug with sinatra exceptions
 gem 'rack', '1.5.2'
 

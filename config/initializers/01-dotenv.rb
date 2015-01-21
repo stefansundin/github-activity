@@ -1,5 +1,4 @@
-require 'dotenv'
-
-if Sinatra::Base.environment != :production
+if Sinatra::Base.environment == :development
+  require 'dotenv'
   Dotenv.load '.env'
 end
