@@ -16,6 +16,7 @@ GEM
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
+    rack-ssl-enforcer (0.2.8)
     raindrops (0.13.0)
     redis (3.2.0)
     sinatra (1.4.5)
@@ -36,6 +37,7 @@ DEPENDENCIES
   dotenv
   httparty
   rack (= 1.5.2)
+  rack-ssl-enforcer
   redis
   sinatra
   unicorn

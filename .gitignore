@@ -1,3 +1,4 @@
 /log/*.log
 /tmp/*.pid
+/tmp/restart.txt
 /.env

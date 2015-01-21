@@ -64,3 +64,7 @@ get '/callback' do
   GithubParty.authenticate(request.env['rack.request.query_hash']['code'])
   redirect '/'
 end
+
+get '/favicon.ico' do
+  redirect "https://stefansundin.github.io/github-activity/img/icon32.png"
+end
