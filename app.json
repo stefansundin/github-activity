@@ -10,17 +10,21 @@
   "env": {
     "RACK_ENV": "production",
     "GITHUB_CLIENT_ID": {
-      "description": "Your GitHub Client ID"
+      "description": "Your GitHub Client ID",
+      "required": false
     },
     "GITHUB_CLIENT_SECRET": {
-      "description": "Your GitHub Client Secret"
+      "description": "Your GitHub Client Secret",
+      "required": false
     },
     "AIRBRAKE_HOST": {
       "description": "Your Airbrake provider (AppEnlight is free but you have to register)",
+      "required": false,
       "value": "api.appenlight.com"
     },
     "AIRBRAKE_KEY": {
-      "description": "Your Airbrake key"
+      "description": "Your Airbrake key",
+      "required": false
     }
   }
 }
