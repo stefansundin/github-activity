@@ -8,6 +8,19 @@
   "addons": ["rediscloud:25"],
   "keywords": ["github", "gist", "rss"],
   "env": {
-    "RACK_ENV": "production"
+    "RACK_ENV": "production",
+    "GITHUB_CLIENT_ID": {
+      "description": "Your GitHub Client ID"
+    },
+    "GITHUB_CLIENT_SECRET": {
+      "description": "Your GitHub Client Secret"
+    },
+    "AIRBRAKE_HOST": {
+      "description": "Your Airbrake provider (AppEnlight is free but you have to register)",
+      "value": "api.appenlight.com"
+    },
+    "AIRBRAKE_KEY": {
+      "description": "Your Airbrake key"
+    }
   }
 }

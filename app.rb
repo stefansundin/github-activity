@@ -59,7 +59,7 @@ get "/auth" do
 end
 
 get "/callback" do
-  return "already authenticated" if ENV["ACCESS_TOKEN"] || $redis.exists("access_token")
+  return "already authenticated" if ENV["ACCESS_TOKEN"] or $redis.exists("access_token")
   github_username, access_token = GithubParty.authenticate(request.env["rack.request.query_hash"]["code"])
 
   headers "Content-Type" => "text/plain"
