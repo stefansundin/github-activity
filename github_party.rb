@@ -1,10 +1,10 @@
-# This is a GitHub party, and everyone's invited!
+# This is a GitHub party, and everyone"s invited!
 
-require 'httparty'
+require "httparty"
 
 class GithubParty
   include HTTParty
-  base_uri 'https://api.github.com'
+  base_uri "https://api.github.com"
 
   def initialize
     @options = self.class.options
@@ -33,11 +33,11 @@ class GithubParty
   end
 
   def gist_comments(gist)
-    return [] if gist['comments'] == 0
+    return [] if gist["comments"] == 0
 
-    id = gist['id']
+    id = gist["id"]
     redis_count = $redis.get("gist:#{id}:count").to_i
-    if redis_count == gist['comments']
+    if redis_count == gist["comments"]
       redis_data = $redis.get "gist:#{id}"
       if redis_data
         comments = JSON.parse redis_data
@@ -48,12 +48,12 @@ class GithubParty
       comments = []
       page = 1
       while true
-        r = self.class.get "#{gist['comments_url']}?page=#{page}", @options
+        r = self.class.get "#{gist["comments_url"]}?page=#{page}", @options
         self.class.process(r)
         raise self.class.error(r) if not r.success?
         break if r.parsed_response.count == 0
         comments = comments + r.parsed_response
-        break if comments.count == gist['comments']
+        break if comments.count == gist["comments"]
         page += 1
       end
       $redis.set "gist:#{id}", comments.to_json
@@ -65,28 +65,32 @@ class GithubParty
   end
 
   def self.authenticate(code)
-    r = post('https://github.com/login/oauth/access_token',
+    r = post("https://github.com/login/oauth/access_token",
               query: {
-                client_id: ENV['GITHUB_CLIENT_ID'],
-                client_secret: ENV['GITHUB_CLIENT_SECRET'],
+                client_id: ENV["GITHUB_CLIENT_ID"],
+                client_secret: ENV["GITHUB_CLIENT_SECRET"],
                 code: code
               }, headers: {
-                'Accept' => 'application/json'
+                "Accept" => "application/json"
               })
-    raise error(r) if not r.success? or r.parsed_response['error']
-    $redis.set 'access_token', r.parsed_response['access_token']
+    raise error(r) if not r.success? or r.parsed_response["error"]
+    access_token = r.parsed_response["access_token"]
+    $redis.set "access_token", access_token
 
-    r = get '/user', options
-    $redis.set 'login', r.parsed_response['login']
+    r = get "/user", options
+    github_username = r.parsed_response["login"]
+    $redis.set "login", github_username
     process(r)
     raise error(r) if not r.success?
+
+    [ github_username, access_token ]
   end
 
   def self.ratelimit
     limits = {
-      limit: $redis.get('x-ratelimit-limit'),
-      remaining: $redis.get('x-ratelimit-remaining'),
-      reset: $redis.get('x-ratelimit-reset'),
+      limit: $redis.get("ratelimit-limit"),
+      remaining: $redis.get("ratelimit-remaining"),
+      reset: $redis.get("ratelimit-reset"),
     }
     limits[:reset] = Time.at(limits[:reset].to_i) if limits[:reset]
     limits
@@ -95,13 +99,13 @@ class GithubParty
   private
 
   def self.process(r)
-    $redis.set 'x-ratelimit-limit', r.headers['X-RateLimit-Limit']
-    $redis.set 'x-ratelimit-remaining', r.headers['X-RateLimit-Remaining']
-    $redis.set 'x-ratelimit-reset', r.headers['X-RateLimit-Reset']
-    $redis.expireat 'x-ratelimit-remaining', r.headers['X-RateLimit-Reset']
-    $redis.expireat 'x-ratelimit-reset', r.headers['X-RateLimit-Reset']
+    $redis.set "ratelimit-limit", r.headers["X-RateLimit-Limit"]
+    $redis.set "ratelimit-remaining", r.headers["X-RateLimit-Remaining"]
+    $redis.set "ratelimit-reset", r.headers["X-RateLimit-Reset"]
+    $redis.expireat "ratelimit-remaining", r.headers["X-RateLimit-Reset"]
+    $redis.expireat "ratelimit-reset", r.headers["X-RateLimit-Reset"]
     if r.code == 401
-      $redis.del 'access_token'
+      $redis.del "access_token"
       raise "Access token #{r.request.options[:query][:access_token]} revoked!"
     end
   end
@@ -110,10 +114,10 @@ class GithubParty
     opts = {
       query: {},
       headers: {
-        'User-Agent' => 'github-activity'
+        "User-Agent" => "github-activity"
       }
     }
-    access_token = $redis.get('access_token')
+    access_token = ENV["ACCESS_TOKEN"] || $redis.get("access_token")
     opts[:query][:access_token] = access_token if access_token
     opts
   end

@@ -1,0 +1,13 @@
+{
+  "name": "GitHub Activity",
+  "description": "GitHub Activity RSS Feed",
+  "repository": "https://github.com/stefansundin/github-activity",
+  "website": "https://github.com/stefansundin/github-activity",
+  "logo": "https://stefansundin.github.io/github-activity/img/icon128.png",
+  "success_url": "/",
+  "addons": ["rediscloud:25"],
+  "keywords": ["github", "gist", "rss"],
+  "env": {
+    "RACK_ENV": "production"
+  }
+}

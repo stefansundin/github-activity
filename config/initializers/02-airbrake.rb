@@ -1,9 +1,9 @@
-require 'airbrake'
+if ENV["AIRBRAKE_KEY"]
+  require "airbrake"
 
-if ENV['AIRBRAKE_KEY']
   Airbrake.configure do |config|
-    config.host = ENV['AIRBRAKE_HOST']
-    config.api_key = ENV['AIRBRAKE_KEY']
+    config.host = ENV["AIRBRAKE_HOST"]
+    config.api_key = ENV["AIRBRAKE_KEY"]
     config.secure = true
 
     # Uncomment this to get errors in development environment:
