@@ -8,6 +8,7 @@ class GithubParty
 
   def initialize
     @options = self.class.options
+    @ratelimit = nil
   end
 
   def gists(user)
@@ -19,7 +20,7 @@ class GithubParty
       page = 1
       while true
         r = self.class.get "/users/#{URI.encode(user)}/gists?page=#{page}", @options
-        self.class.process(r)
+        @ratelimit = self.class.process(r)
         return nil if r.code == 404
         raise self.class.error(r) if not r.success?
         break if r.parsed_response.count == 0
@@ -49,7 +50,7 @@ class GithubParty
       page = 1
       while true
         r = self.class.get "#{gist["comments_url"]}?page=#{page}", @options
-        self.class.process(r)
+        @ratelimit = self.class.process(r)
         raise self.class.error(r) if not r.success?
         break if r.parsed_response.count == 0
         comments = comments + r.parsed_response
@@ -62,6 +63,10 @@ class GithubParty
     end
 
     comments
+  end
+
+  def finalize
+    self.class.finalize(@ratelimit) if @ratelimit
   end
 
   def self.authenticate(code)
@@ -80,7 +85,7 @@ class GithubParty
     r = get "/user", options
     github_username = r.parsed_response["login"]
     $redis.set "login", github_username
-    process(r)
+    finalize(process(r))
     raise error(r) if not r.success?
 
     [ github_username, access_token ]
@@ -98,18 +103,6 @@ class GithubParty
 
   private
 
-  def self.process(r)
-    $redis.set "ratelimit-limit", r.headers["X-RateLimit-Limit"]
-    $redis.set "ratelimit-remaining", r.headers["X-RateLimit-Remaining"]
-    $redis.set "ratelimit-reset", r.headers["X-RateLimit-Reset"]
-    $redis.expireat "ratelimit-remaining", r.headers["X-RateLimit-Reset"]
-    $redis.expireat "ratelimit-reset", r.headers["X-RateLimit-Reset"]
-    if r.code == 401
-      $redis.del "access_token"
-      raise "Access token #{r.request.options[:query][:access_token]} revoked!"
-    end
-  end
-
   def self.options
     opts = {
       query: {},
@@ -120,6 +113,26 @@ class GithubParty
     access_token = ENV["ACCESS_TOKEN"] || $redis.get("access_token")
     opts[:query][:access_token] = access_token if access_token
     opts
+  end
+
+  def self.process(r)
+    if r.code == 401
+      $redis.del "access_token"
+      raise "Access token #{r.request.options[:query][:access_token]} revoked!"
+    end
+    {
+      limit: r.headers["X-RateLimit-Limit"],
+      remaining: r.headers["X-RateLimit-Remaining"],
+      reset: r.headers["X-RateLimit-Reset"]
+    }
+  end
+
+  def self.finalize(ratelimit)
+    $redis.set "ratelimit-limit", ratelimit[:limit]
+    $redis.set "ratelimit-remaining", ratelimit[:remaining]
+    $redis.set "ratelimit-reset", ratelimit[:reset]
+    $redis.expireat "ratelimit-remaining", ratelimit[:reset]
+    $redis.expireat "ratelimit-reset", ratelimit[:reset]
   end
 
   def self.error(r)

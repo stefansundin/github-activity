@@ -31,6 +31,9 @@ get "/:user.xml" do
     end
   end.flatten(1)
 
+  # write the latest ratelimit values to redis
+  client.finalize
+
   # remove your own comments, then sort
   # c["user"] can be null, I think this is if a user was deleted
   @gist_comments.reject! { |id, c| c["user"]["login"] == @user rescue true }
