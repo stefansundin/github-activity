@@ -1,4 +1,11 @@
-worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
+environment = ENV["RACK_ENV"] || "development"
+if environment == "development"
+  # better_errors and binding_of_caller works better with only one process
+  worker_processes 1
+else
+  worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
+end
+
 timeout 60
 preload_app true
 
@@ -23,6 +30,5 @@ after_fork do |server, worker|
   Signal.trap "TERM" do
     puts "Unicorn worker intercepting TERM and doing nothing. Wait for master to send QUIT"
   end
-
   $redis.client.reconnect
 end

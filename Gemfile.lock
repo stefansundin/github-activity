@@ -4,8 +4,17 @@ GEM
     airbrake (4.1.0)
       builder
       multi_json
+    better_errors (2.1.1)
+      coderay (>= 1.0.0)
+      erubis (>= 2.6.6)
+      rack (>= 0.9.0)
+    binding_of_caller (0.7.2)
+      debug_inspector (>= 0.0.1)
     builder (3.2.2)
+    coderay (1.1.0)
+    debug_inspector (0.0.2)
     dotenv (1.0.2)
+    erubis (2.7.0)
     httparty (0.13.3)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
@@ -34,6 +43,8 @@ PLATFORMS
 
 DEPENDENCIES
   airbrake
+  better_errors
+  binding_of_caller
   dotenv
   httparty
   rack (= 1.5.2)
