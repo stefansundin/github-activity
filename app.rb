@@ -72,3 +72,13 @@ end
 get "/favicon.ico" do
   redirect "https://stefansundin.github.io/github-activity/img/icon32.png"
 end
+
+get "/robots.txt" do
+  # only allow root to be indexed
+  headers "Content-Type" => "text/plain"
+  <<eos
+User-agent: *
+Allow: /$
+Disallow: /
+eos
+end
