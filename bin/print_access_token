@@ -1,0 +1,1 @@
+ruby -r ./app -e 'puts $redis.get("access_token")'
