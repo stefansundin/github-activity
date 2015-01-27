@@ -62,11 +62,14 @@
 
     <p>You can <a href="https://stefansundin.github.io/">browse my other projects</a>, or <a href="https://stefansundin.com/">visit my personal website</a>.</p>
 
+    <p>Redis hosting kindly provided by <a href="https://redislabs.com/">Redis Cloud</a>.</p>
+    <p><a href="https://redislabs.com/"><img src="https://stefansundin.github.io/github-activity/img/rediscloud.png"></a></p>
+
 
     <h2>Danger Zone</h2>
 
     <p>
-      Remaining ratelimit: <%= "%s / %s" % [@ratelimit[:remaining] || @ratelimit[:limit] || "unknown", @ratelimit[:limit] || "unknown"] %>.
+      Remaining GitHub ratelimit: <%= "%s / %s" % [@ratelimit[:remaining] || @ratelimit[:limit] || "unknown", @ratelimit[:limit] || "unknown"] %>.
       <%= "Resets in %d min." % ((@ratelimit[:reset]-Time.now)/60) if @ratelimit[:reset] %>
     </p>
 
