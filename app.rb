@@ -41,7 +41,7 @@ get "/:user.xml" do
   @gist_comments.reject! { |id, c| c["user"]["login"] == @user rescue true }
   @gist_comments.sort_by! { |id, c| c["created_at"] }.reverse!
 
-  headers "Content-Type" => "application/atom+xml"
+  headers "Content-Type" => "application/atom+xml;charset=utf-8"
   erb :feed
 end
 

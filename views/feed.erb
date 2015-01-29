@@ -20,7 +20,7 @@
     <content type="html">
 &lt;p>User <%= c["user"]["login"] %> commented on &lt;a href="https://gist.github.com/<%= "#{@user}/#{id}" %>"><%= id %>&lt;/a> at <%= format_date(c["created_at"]) %>:&lt;/p>
 &lt;pre>
-<%= c["body"] %>
+<%= CGI.escapeHTML(c["body"]).gsub(/&([lg])t;/, '&amp;\1t;') %>
 &lt;/pre>
     </content>
   </entry>
