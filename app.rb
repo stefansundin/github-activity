@@ -82,3 +82,12 @@ Allow: /$
 Disallow: /
 eos
 end
+
+
+error do
+  "Sorry, a nasty error occurred: #{env["sinatra.error"].name}"
+end
+
+error GithubPartyException do
+  "There was a problem talking to GitHub."
+end

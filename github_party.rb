@@ -1,6 +1,9 @@
-# This is a GitHub party, and everyone"s invited!
+# This is a GitHub party, and everyone's invited!
 
 require "httparty"
+
+class GithubPartyException < Exception
+end
 
 class GithubParty
   include HTTParty
@@ -22,7 +25,7 @@ class GithubParty
         r = self.class.get "/users/#{URI.encode(user)}/gists?page=#{page}", @options
         @ratelimit = self.class.process(r)
         return nil if r.code == 404
-        raise self.class.error(r) if not r.success?
+        raise GithubPartyException, self.class.error(r) if not r.success?
         break if r.parsed_response.count == 0
         entries = entries + r.parsed_response
         page += 1
@@ -51,7 +54,7 @@ class GithubParty
       while true
         r = self.class.get "#{gist["comments_url"]}?page=#{page}", @options
         @ratelimit = self.class.process(r)
-        raise self.class.error(r) if not r.success?
+        raise GithubPartyException, self.class.error(r) if not r.success?
         break if r.parsed_response.count == 0
         comments = comments + r.parsed_response
         break if comments.count == gist["comments"]
@@ -78,7 +81,7 @@ class GithubParty
               }, headers: {
                 "Accept" => "application/json"
               })
-    raise error(r) if not r.success? or r.parsed_response["error"]
+    raise GithubPartyException, error(r) if not r.success? or r.parsed_response["error"]
     access_token = r.parsed_response["access_token"]
     $redis.set "access_token", access_token
 
@@ -86,7 +89,7 @@ class GithubParty
     github_username = r.parsed_response["login"]
     $redis.set "login", github_username
     finalize(process(r))
-    raise error(r) if not r.success?
+    raise GithubPartyException, error(r) if not r.success?
 
     [ github_username, access_token ]
   end
