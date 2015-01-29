@@ -1,4 +1,5 @@
 require "sinatra"
+require "sinatra/reloader" if development?
 require "./config/application"
 require "./github_party"
 require "erb"
@@ -22,6 +23,7 @@ get "/:user.xml" do
   client = GithubParty.new
   @user = params[:user]
   gists = client.gists @user
+
   return "Unfortunately there does not seem to be a user with the name #{@user}." if gists.nil?
 
   @gist_comments = gists.map do |gist|

@@ -27,7 +27,14 @@ class GithubParty
         return nil if r.code == 404
         raise GithubPartyException, self.class.error(r) if not r.success?
         break if r.parsed_response.count == 0
-        entries = entries + r.parsed_response
+
+        entries = entries + r.parsed_response.reject { |gist| gist["comments"] == 0 }.map do |gist|
+          {
+            "id" => gist["id"],
+            "comments" => gist["comments"],
+          }
+        end
+
         page += 1
       end
       $redis.set "gists:#{user}", entries.to_json
@@ -52,12 +59,24 @@ class GithubParty
       comments = []
       page = 1
       while true
-        r = self.class.get "#{gist["comments_url"]}?page=#{page}", @options
+        r = self.class.get "/gists/#{gist["id"]}/comments?page=#{page}", @options
         @ratelimit = self.class.process(r)
         raise GithubPartyException, self.class.error(r) if not r.success?
         break if r.parsed_response.count == 0
-        comments = comments + r.parsed_response
-        break if comments.count == gist["comments"]
+
+        comments = comments + r.parsed_response.map do |comment|
+          {
+            "id" => comment["id"],
+            "user" => (comment["user"] ? {
+              "login" => comment["user"]["login"],
+            } : nil),
+            "created_at" => comment["created_at"],
+            "updated_at" => comment["updated_at"],
+            "body" => comment["body"],
+          }
+        end
+
+        break if comments.count >= gist["comments"]
         page += 1
       end
       $redis.set "gist:#{id}", comments.to_json

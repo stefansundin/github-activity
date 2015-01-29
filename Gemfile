@@ -13,6 +13,7 @@ gem "airbrake"
 gem "rack-ssl-enforcer"
 
 group :development do
+  gem "sinatra-reloader"
   gem "dotenv"
   gem "binding_of_caller"
   gem "better_errors"
