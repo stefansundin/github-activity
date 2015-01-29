@@ -85,6 +85,11 @@ Disallow: /
 eos
 end
 
+get "/loaderio-c8b2f36404a8cc878bdd10a682ead986.txt" do
+  headers "Content-Type" => "text/plain"
+  "loaderio-c8b2f36404a8cc878bdd10a682ead986"
+end
+
 
 error do
   "Sorry, a nasty error occurred: #{env["sinatra.error"].name}"
