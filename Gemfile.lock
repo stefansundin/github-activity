@@ -23,6 +23,7 @@ GEM
     kgio (2.9.2)
     multi_json (1.10.1)
     multi_xml (0.5.5)
+    newrelic_rpm (3.9.9.275)
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
@@ -59,6 +60,7 @@ DEPENDENCIES
   binding_of_caller
   dotenv
   httparty
+  newrelic_rpm
   rack (= 1.5.2)
   rack-ssl-enforcer
   redis

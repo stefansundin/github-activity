@@ -10,6 +10,7 @@ gem "sinatra"
 gem "redis"
 gem "httparty"
 gem "airbrake"
+gem "newrelic_rpm"
 gem "rack-ssl-enforcer"
 
 group :development do

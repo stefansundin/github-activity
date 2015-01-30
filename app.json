@@ -25,6 +25,10 @@
     "AIRBRAKE_KEY": {
       "description": "(Optional) Your Airbrake key",
       "required": false
+    },
+    "NEWRELIC_KEY": {
+      "description": "(Optional) Your New Relic license key",
+      "required": false
     }
   }
 }
