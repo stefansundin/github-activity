@@ -1,4 +1,4 @@
-# GitHub Activity RSS Feed
+# GitHub Activity RSS Feed [![Code Climate](https://codeclimate.com/github/stefansundin/github-activity/badges/gpa.svg)](https://codeclimate.com/github/stefansundin/github-activity)
 
 You can use this app freely at [gh-rss.herokuapp.com](https://gh-rss.herokuapp.com/), or deploy it yourself if you want to.
 
