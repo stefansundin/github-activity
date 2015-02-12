@@ -90,6 +90,10 @@ get %r{^/loaderio-c8b2f36404a8cc878bdd10a682ead986} do
   "loaderio-c8b2f36404a8cc878bdd10a682ead986"
 end
 
+get "/googlecd2a49223a3e752f.html" do
+  "google-site-verification: googlecd2a49223a3e752f.html"
+end
+
 
 error do
   "Sorry, a nasty error occurred: #{env["sinatra.error"].name}"
