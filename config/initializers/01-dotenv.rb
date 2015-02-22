@@ -1,4 +1,5 @@
-if Sinatra::Base.environment == :development
+configure :development do
   require "dotenv"
+
   Dotenv.load ".env"
 end
