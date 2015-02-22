@@ -24,6 +24,7 @@ before_fork do |server, worker|
     puts "Unicorn master intercepting TERM and sending myself QUIT instead"
     Process.kill "QUIT", Process.pid
   end
+  $redis.client.disconnect
 end
 
 after_fork do |server, worker|

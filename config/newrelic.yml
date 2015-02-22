@@ -211,6 +211,7 @@ test:
 production:
   <<: *default_settings
   monitor_mode: true
+  log_level: warning
 
 # Many applications have a staging environment which behaves
 # identically to production. Support for that environment is provided
