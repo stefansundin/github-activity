@@ -1,6 +1,6 @@
 # GitHub Activity RSS Feed [![Code Climate](https://codeclimate.com/github/stefansundin/github-activity/badges/gpa.svg)](https://codeclimate.com/github/stefansundin/github-activity)
 
-You can use this app freely at [gh-rss.herokuapp.com](https://gh-rss.herokuapp.com/), or deploy it yourself if you want to.
+You can use this app freely at [gh-rss.herokuapp.com](https://gh-rss.herokuapp.com/), or deploy your own if you want to.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/stefansundin/github-activity)
 
