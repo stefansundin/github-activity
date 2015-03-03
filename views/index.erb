@@ -25,7 +25,7 @@
     </hgroup>
   </header>
 
-  <form class="topbar input-group col-sm-3" method="get" action="/go" target="_self">
+  <form class="topbar input-group" method="get" action="/go" target="_self">
     <input class="form-control" type="search" name="username" placeholder="Your GitHub username" pattern="[a-zA-Z0-9\-]+" title="Input a GitHub username, not a url.">
     <span class="input-group-btn">
       <input class="btn btn-primary" type="submit" value="Get RSS Feed">
@@ -78,6 +78,8 @@
 
     <p>Or you can send Bitcoin to: <tt>1EhDUbc5MjC6JavC6idKiTCxnqSxY2sbTX</tt> (<a href="https://stefansundin.github.io/img/btc-qr.png">QR code</a>)</p>
 
+    <p>You can also send Square Cash to: <a>squarEStefansundinCom</a></p>
+
 
     <h2>Danger Zone</h2>
 
@@ -105,6 +107,7 @@
 
   <% if request.host == "gh-rss.herokuapp.com" %>
   <script src="https://stefansundin.github.io/js/ga.js"></script>
+  <script src="https://stefansundin.github.io/js/fubar.js"></script>
   <% end %>
 </body>
 </html>
