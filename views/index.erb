@@ -15,12 +15,6 @@
   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="https://stefansundin.github.io/css/main.css">
   <link rel="alternate" href="https://github.com/stefansundin/github-activity/releases.atom" title="Release feed" />
-  <style type="text/css">
-  form {
-    display: inline-block;
-    width: 400px;
-  }
-  </style>
 </head>
 <body>
   <header>
@@ -31,22 +25,20 @@
     </hgroup>
   </header>
 
-  <div class="buttons">
-    <div class="form-group">
-      <form class="form-horizontal" method="get" action="/go" target="_self">
-        <div class="col-sm-8"><input class="form-control" type="search" name="username" placeholder="Your GitHub username" pattern="[a-zA-Z0-9\-]+" title="Input a GitHub username, not a url."></div>
-        <div class="col-sm-4"><input class="btn btn-primary" type="submit" value="Get RSS Feed"></div>
-      </form>
-      <script>
-      var form = document.getElementsByTagName("form")[0];
-      form.addEventListener("submit", function(e) {
-        var btn = form.getElementsByTagName("input")[1];
-        btn.value = "Working";
-        // btn.disabled = true;
-      });
-      </script>
-    </div>
-  </div>
+  <form class="topbar input-group col-sm-3" method="get" action="/go" target="_self">
+    <input class="form-control" type="search" name="username" placeholder="Your GitHub username" pattern="[a-zA-Z0-9\-]+" title="Input a GitHub username, not a url.">
+    <span class="input-group-btn">
+      <input class="btn btn-primary" type="submit" value="Get RSS Feed">
+    </span>
+  </form>
+  <script>
+  var form = document.getElementsByTagName("form")[0];
+  form.addEventListener("submit", function(e) {
+    var btn = form.getElementsByTagName("input")[1];
+    btn.value = "Working";
+    // btn.disabled = true;
+  });
+  </script>
 
   <div class="container">
     <h2>About</h2>
@@ -70,15 +62,17 @@
 
     <p>I provide this service free of charge. If you would like to thank me, please send me a donation.</p>
 
-    <form class="form-horizontal" method="post" action="https://www.paypal.com/cgi-bin/webscr" track="donate">
+    <form method="post" action="https://www.paypal.com/cgi-bin/webscr" track="donate">
       <input type="hidden" name="cmd" value="_xclick">
       <input type="hidden" name="business" value="KYMVEK692RF5Q">
       <input type="hidden" name="item_number" value="GitHub RSS">
       <input type="hidden" name="return" value="https://stefansundin.github.io/thx">
       <input type="hidden" name="cbt" value="Learn why you just became awesome">
-      <div class="form-group">
-        <div class="col-sm-4"><input class="form-control" type="text" name="amount" id="amount" value="$5.00" placeholder="Amount"></div>
-        <div class="col-sm-5"><input class="btn btn-success" type="submit" value="Donate with PayPal"></div>
+      <div class="input-group col-sm-5">
+        <input class="form-control" type="text" name="amount" id="amount" value="$5.00" placeholder="Amount">
+        <span class="input-group-btn">
+          <input class="btn btn-success" type="submit" value="Donate with PayPal">
+        </span>
       </div>
     </form>
 
