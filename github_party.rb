@@ -37,8 +37,7 @@ class GithubParty
 
         page += 1
       end
-      $redis.set "gists:#{user}", entries.to_json
-      $redis.expire "gists:#{user}", 60*60
+      $redis.setex "gists:#{user}", 60*60, entries.to_json
     end
     entries
   end
@@ -79,9 +78,8 @@ class GithubParty
         break if comments.count >= gist["comments"]
         page += 1
       end
-      $redis.set "gist:#{id}", comments.to_json
-      $redis.set "gist:#{id}:count", comments.count
-      $redis.expire "gist:#{id}", 24*60*60
+      $redis.setex "gist:#{id}", 24*60*60, comments.to_json
+      $redis.setex "gist:#{id}:count", 24*60*60, comments.count
     end
 
     comments
@@ -151,10 +149,8 @@ class GithubParty
 
   def self.finalize(ratelimit)
     $redis.set "ratelimit-limit", ratelimit[:limit]
-    $redis.set "ratelimit-remaining", ratelimit[:remaining]
-    $redis.set "ratelimit-reset", ratelimit[:reset]
-    $redis.expireat "ratelimit-remaining", ratelimit[:reset]
-    $redis.expireat "ratelimit-reset", ratelimit[:reset]
+    $redis.setex "ratelimit-remaining", ratelimit[:reset], ratelimit[:remaining]
+    $redis.setex "ratelimit-reset", ratelimit[:reset], ratelimit[:reset]
   end
 
   def self.error(r)
