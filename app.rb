@@ -75,6 +75,10 @@ get "/favicon.ico" do
   redirect "https://stefansundin.github.io/github-activity/img/icon32.png"
 end
 
+get %r{^/apple-touch-icon} do
+  redirect "https://stefansundin.github.io/github-activity/img/icon128.png"
+end
+
 get "/robots.txt" do
   # only allow root to be indexed
   headers "Content-Type" => "text/plain"
