@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="https://stefansundin.github.io/css/main.css">
-  <link rel="alternate" type="application/atom+xml" href="https://github.com/stefansundin/github-activity/releases.atom" title="Release feed" />
+  <link rel="alternate" type="application/atom+xml" href="https://github.com/stefansundin/github-activity/releases.atom" title="Release feed">
 </head>
 <body>
   <header>
@@ -47,20 +47,12 @@
 
     <p>For now this feed only gives you comments on your gists. Later I might implement notifications when people commit to forks from your stuff, etc. Post ideas as issues <a href="https://github.com/stefansundin/github-activity">on GitHub</a>.</p>
 
-
-    <h2>Credits</h2>
-
-    <p>Made by Stefan Sundin.</p>
-
-    <p>You can <a href="https://stefansundin.github.io/">browse my other projects</a>, or <a href="https://stefansundin.com/">visit my personal website</a>.</p>
-
-    <p>Redis hosting kindly provided by <a href="https://redislabs.com/">Redis Cloud</a>.</p>
-    <p><a href="https://redislabs.com/"><img src="https://stefansundin.github.io/github-activity/img/rediscloud.png"></a></p>
+    <p>I will build in support for private gist comments if I get $100 in donations. For more information, <a href="https://github.com/stefansundin/github-activity/issues/1">see this issue</a>.</p>
 
 
     <h2>Donate</h2>
 
-    <p>I provide this service free of charge. If you would like to thank me, please send me a donation.</p>
+    <p>I provide this service free of charge. If you find it useful, please make a donation. I greatly appreciate any support!</p>
 
     <form method="post" action="https://www.paypal.com/cgi-bin/webscr" track="donate">
       <input type="hidden" name="cmd" value="_xclick">
@@ -76,9 +68,24 @@
       </div>
     </form>
 
-    <p>Or you can send Bitcoin to: <tt>1EhDUbc5MjC6JavC6idKiTCxnqSxY2sbTX</tt> (<a href="https://stefansundin.github.io/img/btc-qr.png">QR code</a>)</p>
+    <p><small><a class="expander" expand="donation-options">Show other donation options: Bitcoin, Square Cash.</a></small></p>
+    <div class="expandable" id="donation-options">
+      <p>Other donation options:</p>
+      <ul>
+        <li>Bitcoin: <tt>1EhDUbc5MjC6JavC6idKiTCxnqSxY2sbTX</tt> (<a href="../img/btc-qr.png">QR code</a>)</li>
+        <li>Square Cash: <a fubar>squarEStefansundinCom</a></li>
+      </ul>
+    </div>
 
-    <p>You can also send Square Cash to: <a>squarEStefansundinCom</a></p>
+
+    <h2>Credits</h2>
+
+    <p>Made by Stefan Sundin.</p>
+
+    <p>You can <a href="https://stefansundin.github.io/">browse my other projects</a>, or <a href="https://stefansundin.com/">visit my personal website</a>.</p>
+
+    <p>Redis hosting kindly provided by <a href="https://redislabs.com/">Redis Cloud</a>.</p>
+    <p><a href="https://redislabs.com/"><img src="https://stefansundin.github.io/github-activity/img/rediscloud.png"></a></p>
 
 
     <h2>Danger Zone</h2>
@@ -103,11 +110,17 @@
     <p><a class="btn btn-danger" href="/flush"><span class="glyphicon glyphicon-trash"></span> Flush cache</a></p>
 
     <p>This button clears the redis cache. Only use in emergencies.</p>
+
+
+    <div class="share">
+      <iframe src="https://mdo.github.io/github-buttons/github-btn.html?user=stefansundin&amp;repo=github-activity&amp;type=watch&amp;count=true&amp;size=large" allowtransparency="true" frameborder="0" scrolling="0" width="155" height="30"></iframe>
+    </div>
   </div>
 
   <% if request.host == "gh-rss.herokuapp.com" %>
   <script src="https://stefansundin.github.io/js/ga.js"></script>
-  <script src="https://stefansundin.github.io/js/fubar.js"></script>
   <% end %>
+  <script src="https://stefansundin.github.io/js/fubar.js"></script>
+  <script src="https://stefansundin.github.io/js/main.js"></script>
 </body>
 </html>
