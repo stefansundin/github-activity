@@ -72,11 +72,11 @@ get "/callback" do
 end
 
 get "/favicon.ico" do
-  redirect "https://stefansundin.github.io/github-activity/img/icon32.png"
+  redirect "/img/icon32.png"
 end
 
 get %r{^/apple-touch-icon} do
-  redirect "https://stefansundin.github.io/github-activity/img/icon128.png"
+  redirect "/img/icon128.png"
 end
 
 get "/robots.txt" do
