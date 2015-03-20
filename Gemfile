@@ -12,9 +12,12 @@ gem "httparty"
 gem "airbrake"
 gem "newrelic_rpm"
 gem "rack-ssl-enforcer"
-gem "pingback", source: "https://repo.fury.io/stefansundin/"
 gem "clogger"
 gem "mail"
+
+source "https://repo.fury.io/stefansundin/" do
+  gem "pingback", "1.1.1"
+end
 
 group :development do
   gem "rake"

@@ -34,7 +34,7 @@ GEM
     newrelic_rpm (3.9.9.275)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
-    pingback (1.1.0)
+    pingback (1.1.1)
       nokogiri
       rack
     pry (0.10.1)
@@ -85,7 +85,7 @@ DEPENDENCIES
   httparty
   mail
   newrelic_rpm
-  pingback!
+  pingback (= 1.1.1)!
   pry-remote
   rack (= 1.5.2)
   rack-ssl-enforcer
