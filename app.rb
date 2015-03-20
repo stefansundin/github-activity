@@ -1,5 +1,4 @@
 require "sinatra"
-require "sinatra/reloader" if development?
 require "./config/application"
 require "./github_party"
 require "erb"
@@ -7,6 +6,7 @@ require "erb"
 def format_date(date)
   date.gsub("T", " ").gsub("Z", " UTC")
 end
+
 
 
 get "/" do
@@ -96,6 +96,18 @@ end
 
 get "/googlecd2a49223a3e752f.html" do
   "google-site-verification: googlecd2a49223a3e752f.html"
+end
+
+post %r{/xmlrpc} do
+  return unless ENV["PINGBACK_EMAIL"]
+  Pingback::Server.new(Proc.new { |source_uri, target_uri|
+    Mail.deliver do
+         from "Pingback <#{ENV["MAIL_FROM"]}>"
+           to ENV["PINGBACK_EMAIL"]
+      subject "New pingback for #{target_uri}"
+         body "Pingback to #{target_uri} from #{source_uri}"
+    end
+  }).call(env)
 end
 
 

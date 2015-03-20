@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="https://stefansundin.github.io/css/main.css">
   <link rel="alternate" type="application/atom+xml" href="https://github.com/stefansundin/github-activity/releases.atom" title="Release feed">
+  <link rel="pingback" href="<%= "#{request.base_url}/xmlrpc" %>">
 </head>
 <body ga="UA-6797859-20">
   <header>
@@ -102,10 +103,10 @@
     <p><a class="btn btn-success" href="/auth"><span class="glyphicon glyphicon-user"></span> Authenticate</a></p>
     <% else %>
     <p>Please configure the GitHub ENV variables to authenticate (<a href="https://github.com/stefansundin/github-activity/blob/master/README.md">instructions</a>).</p>
-    <% end %>
+    <% end -%>
 
     <p>Authenticating gives you a lot higher ratelimit.</p>
-    <% end %>
+    <% end -%>
 
     <p><a class="btn btn-danger" href="/flush"><span class="glyphicon glyphicon-trash"></span> Flush cache</a></p>
 
@@ -119,7 +120,7 @@
 
   <% if request.host == "gh-rss.herokuapp.com" %>
   <script src="https://stefansundin.github.io/js/ga.js"></script>
-  <% end %>
+  <% end -%>
   <script src="https://stefansundin.github.io/js/fubar.js"></script>
   <script src="https://stefansundin.github.io/js/main.js"></script>
 </body>

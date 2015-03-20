@@ -12,6 +12,9 @@ gem "httparty"
 gem "airbrake"
 gem "newrelic_rpm"
 gem "rack-ssl-enforcer"
+gem "pingback"
+gem "clogger"
+gem "mail"
 
 group :development do
   gem "rake"
@@ -19,4 +22,5 @@ group :development do
   gem "dotenv"
   gem "binding_of_caller"
   gem "better_errors"
+  gem "pry-remote"
 end
