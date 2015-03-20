@@ -1,8 +1,6 @@
 # This is a GitHub party, and everyone's invited!
 
 require "httparty"
-require "dotenv"
-Dotenv.load ".env"
 
 class GithubReleaseParty
   include HTTParty
