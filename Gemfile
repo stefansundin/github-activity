@@ -12,7 +12,7 @@ gem "httparty"
 gem "airbrake"
 gem "newrelic_rpm"
 gem "rack-ssl-enforcer"
-gem "pingback"
+gem "pingback", source: "https://repo.fury.io/stefansundin/"
 gem "clogger"
 gem "mail"
 

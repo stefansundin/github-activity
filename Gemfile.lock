@@ -1,5 +1,6 @@
 GEM
   remote: https://rubygems.org/
+  remote: https://repo.fury.io/stefansundin/
   specs:
     airbrake (4.1.0)
       builder
@@ -84,7 +85,7 @@ DEPENDENCIES
   httparty
   mail
   newrelic_rpm
-  pingback
+  pingback!
   pry-remote
   rack (= 1.5.2)
   rack-ssl-enforcer

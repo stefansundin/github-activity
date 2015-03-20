@@ -4,7 +4,4 @@ require "clogger"
 disable :logging
 
 # enable combined log format
-use Clogger,
-  format: :Combined,
-  logger: $stdout,
-  reentrant: true
+use Clogger, format: :Combined, logger: $stdout, reentrant: true

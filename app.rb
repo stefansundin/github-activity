@@ -99,7 +99,8 @@ get "/googlecd2a49223a3e752f.html" do
 end
 
 post %r{/xmlrpc} do
-  return unless ENV["PINGBACK_EMAIL"]
+  raise "PINGBACK_EMAIL not configured" unless ENV["PINGBACK_EMAIL"]
+
   Pingback::Server.new(Proc.new { |source_uri, target_uri|
     Mail.deliver do
          from "Pingback <#{ENV["MAIL_FROM"]}>"
@@ -107,7 +108,7 @@ post %r{/xmlrpc} do
       subject "New pingback for #{target_uri}"
          body "Pingback to #{target_uri} from #{source_uri}"
     end
-  }).call(env)
+  }).process(request.body.read)
 end
 
 
