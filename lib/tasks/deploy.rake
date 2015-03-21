@@ -20,7 +20,7 @@ namespace :deploy do
   end
 
   desc "Tag latest release"
-  task :tag do
+  task :tag => :dotenv do
     # get heroku version number
     ver = `heroku releases`.split("\n")[1].split(" ")[0]
     hash = `git rev-parse --short HEAD`.strip
@@ -43,7 +43,7 @@ namespace :deploy do
 end
 
 desc "Rebuild all the release tags"
-task :retag do
+task :retag => :dotenv do
   github = GithubReleaseParty.new
 
   tags = `git tag -l heroku/v* --sort=version:refname`.split("\n")
