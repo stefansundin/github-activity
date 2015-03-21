@@ -108,7 +108,7 @@ post %r{/xmlrpc} do
       subject "New pingback for #{target_uri}"
          body "Pingback to #{target_uri} from #{source_uri}"
     end
-  }).process(request.body.read)
+  }).call(env)
 end
 
 

@@ -16,7 +16,7 @@ gem "clogger"
 gem "mail"
 
 source "https://repo.fury.io/stefansundin/" do
-  gem "pingback", "1.1.1"
+  gem "pingback"
 end
 
 group :development do
