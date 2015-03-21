@@ -9,12 +9,8 @@
   "keywords": ["github", "gist", "rss"],
   "env": {
     "RACK_ENV": "production",
-    "GITHUB_CLIENT_ID": {
-      "description": "(Optional) Your GitHub Client ID",
-      "required": false
-    },
-    "GITHUB_CLIENT_SECRET": {
-      "description": "(Optional) Your GitHub Client Secret",
+    "ACCESS_TOKEN": {
+      "description": "(Optional) Your GitHub access token",
       "required": false
     },
     "AIRBRAKE_HOST": {
