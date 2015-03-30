@@ -19,6 +19,7 @@ GEM
     debug_inspector (0.0.2)
     dotenv (2.0.0)
     erubis (2.7.0)
+    heroku-env (0.0.1)
     httparty (0.13.3)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
@@ -83,6 +84,7 @@ DEPENDENCIES
   bundler
   clogger
   dotenv
+  heroku-env
   httparty
   mail
   newrelic_rpm

@@ -15,6 +15,7 @@ gem "newrelic_rpm"
 gem "rack-ssl-enforcer"
 gem "clogger"
 gem "mail"
+gem "heroku-env"
 
 source "https://repo.fury.io/stefansundin/" do
   gem "pingback"
