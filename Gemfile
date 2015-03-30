@@ -5,6 +5,7 @@ ruby File.read(".ruby-version").strip
 # newer rack has bug with sinatra exceptions
 gem "rack", "1.5.2"
 
+gem "bundler"
 gem "unicorn"
 gem "sinatra"
 gem "redis"

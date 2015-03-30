@@ -1,5 +1,3 @@
-require "redis"
-
 ENV["REDIS_URL"] ||= ENV["REDISCLOUD_URL"] || ENV["REDISTOGO_URL"]
 
 begin

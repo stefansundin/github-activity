@@ -80,6 +80,7 @@ DEPENDENCIES
   airbrake
   better_errors
   binding_of_caller
+  bundler
   clogger
   dotenv
   httparty

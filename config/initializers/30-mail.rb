@@ -1,5 +1,3 @@
-require "mail"
-
 ENV["SENDGRID_SMTP_SERVER"] ||= "smtp.sendgrid.net"
 ENV["MANDRILL_SMTP_SERVER"] ||= "smtp.mandrillapp.com"
 

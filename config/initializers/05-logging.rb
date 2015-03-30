@@ -1,5 +1,3 @@
-require "clogger"
-
 # disable Sinatra's logger
 disable :logging
 
