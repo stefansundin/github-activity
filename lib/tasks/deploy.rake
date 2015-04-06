@@ -32,6 +32,7 @@ namespace :deploy do
     message = "Deploy #{hash[0..6]}\n\nDiff: https://github.com/stefansundin/github-activity/compare/#{last_tag}...#{tag_name}\n#{commits}"
 
     # tag and push new tag
+    puts "Tagging #{tag_name}."
     success = system "git tag -a -m \"#{message.gsub('"','\\"')}\" #{tag_name} #{hash}"
     abort if not success
     success = system "git push origin #{tag_name}"
@@ -39,8 +40,7 @@ namespace :deploy do
 
     # create GitHub release
     puts
-    puts "Sleeping 3 seconds to let GitHub process the new tag"
-    puts
+    puts "Sleeping 3 seconds to let GitHub process the new tag."
     sleep 3
     GithubReleaseParty.create(tag_name, ver, message)
   end
