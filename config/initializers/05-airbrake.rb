@@ -5,7 +5,7 @@ if ENV["AIRBRAKE_KEY"]
     config.secure = true
 
     # Uncomment this to get errors in development environment:
-    # config.development_environments = []
+    config.development_environments = []
   end
 
   use Airbrake::Sinatra

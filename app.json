@@ -5,21 +5,12 @@
   "website": "https://github.com/stefansundin/github-activity",
   "logo": "https://stefansundin.github.io/github-activity/img/icon128.png",
   "success_url": "/",
-  "addons": ["rediscloud:25"],
+  "addons": ["rediscloud:25", "raygun:intro"],
   "keywords": ["github", "gist", "rss"],
   "env": {
     "RACK_ENV": "production",
     "ACCESS_TOKEN": {
       "description": "(Optional) Your GitHub access token",
-      "required": false
-    },
-    "AIRBRAKE_HOST": {
-      "description": "(Optional) Your Airbrake provider (AppEnlight is free but you have to register)",
-      "required": false,
-      "value": "api.appenlight.com"
-    },
-    "AIRBRAKE_KEY": {
-      "description": "(Optional) Your Airbrake key",
       "required": false
     }
   }

@@ -2,12 +2,10 @@ source "https://rubygems.org"
 
 ruby File.read(".ruby-version").strip
 
-# newer rack has bug with sinatra exceptions
-gem "rack", "1.5.2"
-
+gem "rack"
+gem "sinatra"
 gem "bundler"
 gem "unicorn"
-gem "sinatra"
 gem "redis"
 gem "httparty"
 gem "airbrake"
