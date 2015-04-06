@@ -38,6 +38,10 @@ namespace :deploy do
     abort if not success
 
     # create GitHub release
+    puts
+    puts "Sleeping 3 seconds to let GitHub process the new tag"
+    puts
+    sleep 3
     GithubReleaseParty.create(tag_name, ver, message)
   end
 end

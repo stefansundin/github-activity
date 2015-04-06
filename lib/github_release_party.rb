@@ -39,7 +39,7 @@ class GithubReleaseParty
     if r.success?
       puts "GitHub release #{name} updated!"
     else
-      puts "Failed to update GitHub release!"
+      puts "Failed to update GitHub release #{tag_name}!"
       puts error(r)
     end
   end
@@ -60,8 +60,14 @@ class GithubReleaseParty
     if r.success?
       puts "GitHub release #{tag_name} created!"
     else
-      puts "Failed to create GitHub release!"
       puts error(r)
+      puts
+      puts "Failed to create GitHub release!"
+      puts "Create it manually here: https://github.com/#{owner_and_repo}/releases/new"
+      puts "Tag version:  #{tag_name}"
+      puts "Release title: #{tag_name}"
+      puts "Message:"
+      puts message
     end
   end
 
