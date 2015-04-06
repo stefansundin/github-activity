@@ -16,7 +16,6 @@ end
 
 get "/go" do
   params[:username] = "stefansundin" if params[:username].nil? or params[:username].empty?
-  raise "foo"
   redirect "/#{params[:username]}.xml"
 end
 
