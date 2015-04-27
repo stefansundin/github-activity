@@ -26,5 +26,5 @@ group :development do
   gem "binding_of_caller"
   gem "better_errors"
   gem "pry-remote"
-  gem "github-release-party", path: "/Users/stefansundin/p/github-release-party"
+  gem "github-release-party"
 end
