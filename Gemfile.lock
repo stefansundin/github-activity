@@ -1,3 +1,9 @@
+PATH
+  remote: /Users/stefansundin/p/github-release-party
+  specs:
+    github-release-party (0.0.1)
+      httparty (~> 0.13)
+
 GEM
   remote: https://rubygems.org/
   remote: https://repo.fury.io/stefansundin/
@@ -84,6 +90,7 @@ DEPENDENCIES
   bundler
   clogger
   dotenv
+  github-release-party!
   heroku-env
   httparty
   mail
