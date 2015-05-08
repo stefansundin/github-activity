@@ -22,6 +22,7 @@ end
 group :development do
   gem "rake"
   gem "sinatra-reloader"
+  gem "powder"
   gem "dotenv"
   gem "binding_of_caller"
   gem "better_errors"
