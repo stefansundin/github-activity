@@ -80,17 +80,17 @@ get %r{^/apple-touch-icon} do
 end
 
 if ENV["LOADERIO_VERIFICATION_TOKEN"]
-  /(loaderio-)?(?<token>[0-9a-f]+)/ =~ ENV["LOADERIO_VERIFICATION_TOKEN"]
-  get Regexp.new("^/loaderio-#{token}") do
+  /(loaderio-)?(?<loaderio_token>[0-9a-f]+)/ =~ ENV["LOADERIO_VERIFICATION_TOKEN"]
+  get Regexp.new("^/loaderio-#{loaderio_token}") do
     headers "Content-Type" => "text/plain"
-    "loaderio-#{token}"
+    "loaderio-#{loaderio_token}"
   end
 end
 
 if ENV["GOOGLE_VERIFICATION_TOKEN"]
-  /(google)?(?<token>[0-9a-f]+)(\.html)?/ =~ ENV["GOOGLE_VERIFICATION_TOKEN"]
-  get "/google#{token}.html" do
-    "google-site-verification: google#{token}.html"
+  /(google)?(?<google_token>[0-9a-f]+)(\.html)?/ =~ ENV["GOOGLE_VERIFICATION_TOKEN"]
+  get "/google#{google_token}.html" do
+    "google-site-verification: google#{google_token}.html"
   end
 end
 
