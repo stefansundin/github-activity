@@ -79,23 +79,19 @@ get %r{^/apple-touch-icon} do
   redirect "/img/icon128.png"
 end
 
-get "/robots.txt" do
-  # only allow root to be indexed
-  headers "Content-Type" => "text/plain"
-  <<eos
-User-agent: *
-Allow: /$
-Disallow: /
-eos
+if ENV["LOADERIO_VERIFICATION_TOKEN"]
+  /(loaderio-)?(?<token>[0-9a-f]+)/ =~ ENV["LOADERIO_VERIFICATION_TOKEN"]
+  get Regexp.new("^/loaderio-#{token}") do
+    headers "Content-Type" => "text/plain"
+    "loaderio-#{token}"
+  end
 end
 
-get %r{^/loaderio-c8b2f36404a8cc878bdd10a682ead986} do
-  headers "Content-Type" => "text/plain"
-  "loaderio-c8b2f36404a8cc878bdd10a682ead986"
-end
-
-get "/googlecd2a49223a3e752f.html" do
-  "google-site-verification: googlecd2a49223a3e752f.html"
+if ENV["GOOGLE_VERIFICATION_TOKEN"]
+  /(google)?(?<token>[0-9a-f]+)(\.html)?/ =~ ENV["GOOGLE_VERIFICATION_TOKEN"]
+  get "/google#{token}.html" do
+    "google-site-verification: google#{token}.html"
+  end
 end
 
 post %r{/xmlrpc} do

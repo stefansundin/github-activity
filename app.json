@@ -12,6 +12,14 @@
     "ACCESS_TOKEN": {
       "description": "(Optional) Your GitHub access token",
       "required": false
+    },
+    "GOOGLE_VERIFICATION_TOKEN": {
+      "description": "(Optional) Google Webmaster Tools verification. E.g. 'googlecd2a49223a3e752f.html'",
+      "required": false
+    },
+    "LOADERIO_VERIFICATION_TOKEN": {
+      "description": "(Optional) Your loader.io token. E.g. 'loaderio-c8b2f36404a8cc878bdd10a682ead986'",
+      "required": false
     }
   }
 }
