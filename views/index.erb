@@ -101,17 +101,17 @@ form[action="/go"] input.btn {
       <%= "Resets in %d min." % ((@ratelimit[:reset]-Time.now)/60) if @ratelimit[:reset] %>
     </p>
 
-    <% unless ENV["ACCESS_TOKEN"] or $redis.exists("access_token") %>
+    <%- unless ENV["ACCESS_TOKEN"] -%>
     <p>Not authenticated!</p>
 
-    <% if ENV["GITHUB_CLIENT_ID"] %>
+    <%- if ENV["GITHUB_CLIENT_ID"] -%>
     <p><a class="btn btn-success" href="/auth"><span class="glyphicon glyphicon-user"></span> Authenticate</a></p>
-    <% else %>
+    <%- else -%>
     <p>Please configure the GitHub ENV variables to authenticate (<a href="https://github.com/stefansundin/github-activity/blob/master/README.md">instructions</a>).</p>
-    <% end -%>
+    <%- end -%>
 
     <p>Authenticating gives you a lot higher ratelimit.</p>
-    <% end -%>
+    <%- end -%>
 
     <p><a class="btn btn-danger" href="/flush"><span class="glyphicon glyphicon-trash"></span> Flush cache</a></p>
 
@@ -123,9 +123,9 @@ form[action="/go"] input.btn {
     </div>
   </div>
 
-  <% if request.host == "gh-rss.herokuapp.com" %>
+  <%- if request.host == "gh-rss.herokuapp.com" -%>
   <script src="https://stefansundin.github.io/js/ga.js"></script>
-  <% end -%>
+  <%- end -%>
   <script src="https://stefansundin.github.io/js/fubar.js"></script>
   <script src="https://stefansundin.github.io/js/main.js"></script>
 </body>

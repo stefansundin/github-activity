@@ -9,7 +9,7 @@
     <name>Stefan Sundin</name>
     <uri>https://gh-rss.herokuapp.com/</uri>
   </author>
-<% @gist_comments.each do |id, c| %>
+<%- @gist_comments.each do |id, c| -%>
 
   <entry>
     <id>gist:comment:<%= "#{c["id"]}:#{c["updated_at"]}" %></id>
@@ -24,5 +24,5 @@
 &lt;/pre>
     </content>
   </entry>
-<% end %>
+<%- end -%>
 </feed>
