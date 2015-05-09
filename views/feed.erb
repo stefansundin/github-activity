@@ -5,10 +5,6 @@
   <icon>https://assets-cdn.github.com/favicon.ico</icon>
   <link href="https://gh-rss.herokuapp.com/<%= @user %>.xml" rel="self" />
   <updated><%= @gist_comments[0][1]["updated_at"] if @gist_comments[0] %></updated>
-  <author>
-    <name>Stefan Sundin</name>
-    <uri>https://gh-rss.herokuapp.com/</uri>
-  </author>
 <%- @gist_comments.each do |id, c| -%>
 
   <entry>
