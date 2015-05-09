@@ -149,8 +149,10 @@ class GithubParty
 
   def self.finalize(ratelimit)
     $redis.set "ratelimit-limit", ratelimit[:limit]
-    $redis.setex "ratelimit-remaining", ratelimit[:reset], ratelimit[:remaining]
-    $redis.setex "ratelimit-reset", ratelimit[:reset], ratelimit[:reset]
+    $redis.set "ratelimit-remaining", ratelimit[:remaining]
+    $redis.set "ratelimit-reset", ratelimit[:reset]
+    $redis.expireat "ratelimit-remaining", ratelimit[:reset].to_i
+    $redis.expireat "ratelimit-reset", ratelimit[:reset].to_i
   end
 
   def self.error(r)

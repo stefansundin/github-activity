@@ -99,7 +99,7 @@ form[action="/go"] input.btn {
 
     <p>
       Remaining GitHub ratelimit: <%= "%s / %s" % [@ratelimit[:remaining] || @ratelimit[:limit] || "unknown", @ratelimit[:limit] || "unknown"] %>.
-      <%= "Resets in %d min." % ((@ratelimit[:reset]-Time.now)/60) if @ratelimit[:reset] %>
+      <%= "Resets in %d min." % [(@ratelimit[:reset]-Time.now)/60] if @ratelimit[:reset] %>
     </p>
 
     <%- unless ENV["ACCESS_TOKEN"] or $redis.exists("access_token") -%>
