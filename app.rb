@@ -15,8 +15,8 @@ get "/" do
 end
 
 get "/go" do
-  params[:username] = "stefansundin" if params[:username].nil? or params[:username].empty?
-  redirect "/#{params[:username]}.xml"
+  params[:q] = "stefansundin" if params[:q].nil? or params[:q].empty?
+  redirect "/#{params[:q]}.xml"
 end
 
 get "/:user.xml" do
@@ -77,6 +77,19 @@ end
 
 get %r{^/apple-touch-icon} do
   redirect "/img/icon128.png"
+end
+
+get "/opensearch" do
+  headers "Content-Type" => "application/opensearchdescription+xml"
+  <<-EOF
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>GitHub Activity RSS Feed</ShortName>
+  <Description>GitHub Activity RSS Feed</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="16" height="16" type="image/x-icon">#{request.base_url}/favicon.ico</Image>
+  <Url type="text/html" method="get" template="#{request.base_url}/go?q={searchTerms}" />
+</OpenSearchDescription>
+EOF
 end
 
 if ENV["LOADERIO_VERIFICATION_TOKEN"]
