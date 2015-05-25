@@ -122,7 +122,7 @@ end
 
 
 error do
-  "Sorry, a nasty error occurred: #{env["sinatra.error"].name}"
+  "Sorry, a nasty error occurred: #{env["sinatra.error"].message}"
 end
 
 error GithubPartyException do
