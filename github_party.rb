@@ -89,28 +89,6 @@ class GithubParty
     self.class.finalize(@ratelimit) if @ratelimit
   end
 
-  def self.authenticate(code)
-    r = post("https://github.com/login/oauth/access_token",
-              query: {
-                client_id: ENV["GITHUB_CLIENT_ID"],
-                client_secret: ENV["GITHUB_CLIENT_SECRET"],
-                code: code
-              }, headers: {
-                "Accept" => "application/json"
-              })
-    raise GithubPartyException, error(r) if not r.success? or r.parsed_response["error"]
-    access_token = r.parsed_response["access_token"]
-    $redis.set "access_token", access_token
-
-    r = get "/user", options
-    github_username = r.parsed_response["login"]
-    $redis.set "login", github_username
-    finalize(process(r))
-    raise GithubPartyException, error(r) if not r.success?
-
-    [ github_username, access_token ]
-  end
-
   def self.ratelimit
     limits = {
       limit: $redis.get("ratelimit-limit"),
