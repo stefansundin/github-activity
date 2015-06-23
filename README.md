@@ -11,7 +11,7 @@ Data is cached in redis. You have to [verify](https://heroku.com/verify) your He
 
 You should configure `maxmemory-policy` to be `volatile-lru` to prevent your redis instance from running out of memory.
 
-You probably want to authenticate with GitHub to get more than 60 requests per hour. Use [this script](https://gist.github.com/stefansundin/85b9969ab8664b97b7cf) to obtain a GitHub access token.
+You probably want to [create a GitHub access token](https://github.com/settings/tokens) to get more than 60 requests per hour. Uncheck all the scopes to only give it access to public data.
 
 
 ## TODO
