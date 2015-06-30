@@ -48,7 +48,7 @@ class GithubParty
 
       page += 1
     end
-    $redis.setex "gists:#{user}", 60*60, entries.to_json
+    $redis.setex "gists:#{user}", 5*60, entries.to_json
     entries
   end
 
@@ -60,37 +60,35 @@ class GithubParty
     if redis_count == gist["comments"]
       redis_data = $redis.get "gist:#{id}"
       if redis_data
-        comments = JSON.parse redis_data
+        return JSON.parse(redis_data)
       end
     end
 
-    if not comments
-      comments = []
-      page = 1
-      while true
-        r = self.class.get "/gists/#{gist["id"]}/comments?page=#{page}", options
-        process(r)
-        raise GithubPartyError, self.class.error(r) if not r.success?
-        break if r.parsed_response.count == 0
+    comments = []
+    page = 1
+    while true
+      r = self.class.get "/gists/#{gist["id"]}/comments?page=#{page}", options
+      process(r)
+      raise GithubPartyError, self.class.error(r) if not r.success?
+      break if r.parsed_response.count == 0
 
-        comments = comments + r.parsed_response.map do |comment|
-          {
-            "id" => comment["id"],
-            "user" => (comment["user"] ? {
-              "login" => comment["user"]["login"],
-            } : nil),
-            "created_at" => comment["created_at"],
-            "updated_at" => comment["updated_at"],
-            "body" => comment["body"],
-          }
-        end
-
-        break if comments.count >= gist["comments"]
-        page += 1
+      comments = comments + r.parsed_response.map do |comment|
+        {
+          "id" => comment["id"],
+          "user" => (comment["user"] ? {
+            "login" => comment["user"]["login"],
+          } : nil),
+          "created_at" => comment["created_at"],
+          "updated_at" => comment["updated_at"],
+          "body" => comment["body"],
+        }
       end
-      $redis.setex "gist:#{id}", 24*60*60, comments.to_json
-      $redis.setex "gist:#{id}:count", 24*60*60, comments.count
+
+      break if comments.count >= gist["comments"]
+      page += 1
     end
+    $redis.setex "gist:#{id}", 60*60, comments.to_json
+    $redis.setex "gist:#{id}:count", 60*60, comments.count
 
     comments
   end
@@ -113,7 +111,7 @@ class GithubParty
     r = self.class.get "/user", options
     raise GithubPartyError, self.class.error(r) if not r.success?
     login = r.parsed_response["login"]
-    $redis.setex "username:#{@access_token}", 60*60, login
+    $redis.setex "username:#{@access_token}", 5*60, login
     login
   end
 
@@ -141,7 +139,7 @@ class GithubParty
 
       page += 1
     end
-    $redis.setex "gists:token:#{@access_token}", 60*60, entries.to_json
+    $redis.setex "gists:token:#{@access_token}", 5*60, entries.to_json
     entries
   end
 
