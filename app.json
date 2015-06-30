@@ -9,8 +9,16 @@
   "keywords": ["github", "gist", "rss"],
   "env": {
     "RACK_ENV": "production",
-    "ACCESS_TOKEN": {
-      "description": "(Optional) Your GitHub access token",
+    "GITHUB_CLIENT_ID": {
+      "description": "(Optional) Your GitHub app client id",
+      "required": false
+    },
+    "GITHUB_CLIENT_SECRET": {
+      "description": "(Optional) Your GitHub app client secret",
+      "required": false
+    },
+    "ENCRYPTION_KEY": {
+      "description": "(Optional) Encryption key for authenticated tokens. Generate with `rake secret`.",
       "required": false
     },
     "GOOGLE_VERIFICATION_TOKEN": {

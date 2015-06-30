@@ -15,6 +15,7 @@ gem "rack-ssl-enforcer"
 gem "clogger"
 gem "mail"
 gem "heroku-env"
+gem "encrypted_strings"
 
 source "https://repo.fury.io/stefansundin/" do
   gem "pingback"

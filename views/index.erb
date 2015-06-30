@@ -47,14 +47,18 @@ form[action="/go"] input.btn {
   });
   </script>
 
+  <%- if ENV["GITHUB_CLIENT_ID"] and ENV["GITHUB_CLIENT_SECRET"] -%>
+  <div class="text-center">
+    For comments on private gists, you have to <a href="/auth">authenticate</a>.
+  </div>
+  <%- end -%>
+
   <div class="container">
     <h2>About</h2>
 
     <p>GitHub does not notify you when you receive comments on your gists. That's why I created this website, which gives you a convenient RSS feed you can subscribe to.</p>
 
     <p>For now this feed only gives you comments on your gists. Later I might implement notifications when people commit to forks from your stuff, etc. Post ideas as issues <a href="https://github.com/stefansundin/github-activity">on GitHub</a>.</p>
-
-    <p>I will build in support for private gist comments if I get $100 in donations. For more information, <a href="https://github.com/stefansundin/github-activity/issues/1">see this issue</a>.</p>
 
 
     <h2>Donate</h2>
@@ -101,18 +105,6 @@ form[action="/go"] input.btn {
       Remaining GitHub ratelimit: <%= "%s / %s" % [@ratelimit[:remaining] || @ratelimit[:limit] || "unknown", @ratelimit[:limit] || "unknown"] %>.
       <%= "Resets in %d min." % [(@ratelimit[:reset]-Time.now)/60] if @ratelimit[:reset] %>
     </p>
-
-    <%- unless ENV["ACCESS_TOKEN"] or $redis.exists("access_token") -%>
-    <p>Not authenticated!</p>
-
-    <%- if ENV["GITHUB_CLIENT_ID"] -%>
-    <p><a class="btn btn-success" href="/auth"><span class="glyphicon glyphicon-user"></span> Authenticate</a></p>
-    <%- else -%>
-    <p>Please configure the GitHub ENV variables to authenticate (<a href="https://github.com/stefansundin/github-activity/blob/master/README.md">instructions</a>).</p>
-    <%- end -%>
-
-    <p>Authenticating gives you a lot higher ratelimit.</p>
-    <%- end -%>
 
     <p><a class="btn btn-danger" href="/flush"><span class="glyphicon glyphicon-trash"></span> Flush cache</a></p>
 

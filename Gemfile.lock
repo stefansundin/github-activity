@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   remote: https://repo.fury.io/stefansundin/
   specs:
-    airbrake (4.2.1)
+    airbrake (4.3.0)
       builder
       multi_json
     backports (3.6.4)
@@ -18,10 +18,11 @@ GEM
     coderay (1.1.0)
     debug_inspector (0.0.2)
     dotenv (2.0.2)
+    encrypted_strings (0.3.3)
     erubis (2.7.0)
-    github-release-party (0.0.2)
+    github-release-party (0.0.3)
       httparty (~> 0.13)
-    heroku-env (0.1.1)
+    heroku-env (0.1.2)
     httparty (0.13.5)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
@@ -55,7 +56,7 @@ GEM
     rack-ssl-enforcer (0.2.8)
     rack-test (0.6.3)
       rack (>= 1.0)
-    raindrops (0.13.0)
+    raindrops (0.14.0)
     rake (10.4.2)
     redis (3.2.1)
     redis-namespace (1.5.2)
@@ -91,6 +92,7 @@ DEPENDENCIES
   bundler
   clogger
   dotenv
+  encrypted_strings
   github-release-party
   heroku-env
   httparty
@@ -109,4 +111,4 @@ DEPENDENCIES
   unicorn
 
 BUNDLED WITH
-   1.10.3
+   1.10.5

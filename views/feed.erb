@@ -3,7 +3,8 @@
   <id>user:<%= @user %></id>
   <title><%= @user %>'s gist comments</title>
   <icon>https://assets-cdn.github.com/favicon.ico</icon>
-  <link href="https://gh-rss.herokuapp.com/<%= @user %>.xml" rel="self" />
+  <link href="<%= request.url %>" rel="self" />
+  <link href="https://github.com/<%= @user %>" rel="alternate" />
   <updated><%= @gist_comments[0][1]["updated_at"] if @gist_comments[0] %></updated>
 <%- @gist_comments.each do |id, c| -%>
 
