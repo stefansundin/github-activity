@@ -44,7 +44,7 @@ get "/:user.xml" do |user|
   erb :feed
 end
 
-get "/token/:token" do |token|
+get "/token/*" do |token|
   begin
     access_token = token.decrypt(:symmetric, password: ENV["ENCRYPTION_KEY"])
   rescue
@@ -90,7 +90,7 @@ get "/flushall" do
 end
 
 get "/auth" do
-  redirect "https://github.com/login/oauth/authorize?client_id=#{ENV["GITHUB_CLIENT_ID"]}"
+  redirect "https://github.com/login/oauth/authorize?client_id=#{ENV["GITHUB_CLIENT_ID"]}&scope=gist"
 end
 
 get "/callback" do
