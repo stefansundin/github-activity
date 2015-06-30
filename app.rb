@@ -59,6 +59,18 @@ get "/flushall" do
   $redis.flushall
 end
 
+get "/auth" do
+  redirect "https://github.com/login/oauth/authorize?client_id=#{ENV["GITHUB_CLIENT_ID"]}"
+end
+
+get "/callback" do
+  return "already authenticated" if ENV["ACCESS_TOKEN"] or $redis.exists("access_token")
+  github_username, access_token = GithubParty.authenticate(request.env["rack.request.query_hash"]["code"])
+
+  headers "Content-Type" => "text/plain"
+  "Welcome #{github_username}. Your access token is stored in redis. You might want to store it in ENV instead:\n\nheroku config:set ACCESS_TOKEN=#{access_token}"
+end
+
 get "/favicon.ico" do
   redirect "/img/icon32.png"
 end
