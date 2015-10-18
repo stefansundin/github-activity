@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <base target="_blank">
   <title>GitHub Activity RSS Feed</title>
@@ -11,28 +11,78 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <link rel="icon" href="/img/icon32.png">
-  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-  <link rel="stylesheet" href="https://stefansundin.github.io/css/main.css">
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha384-pdapHxIh7EYuwy6K7iE41uXVxGCXY0sAjBzaElYGJUrzwodck3Lx6IE2lA0rFREo" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
   <link rel="alternate" type="application/atom+xml" href="https://github.com/stefansundin/github-activity/releases.atom" title="Release feed">
   <link rel="search" type="application/opensearchdescription+xml" href="/opensearch" title="GitHub Activity RSS Feed">
   <link rel="pingback" href="<%= "#{request.base_url}/xmlrpc" %>">
   <style>
+body {
+  padding: 0 15px;
+  margin-bottom: 100px;
+}
+a {
+  cursor: pointer;
+}
+.container {
+  padding: 0;
+}
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+header {
+  margin-top: 25px;
+  text-align: center;
+}
+header h1 {
+  font-size: 4em;
+  font-weight: 700;
+  margin-bottom: 0.5em;
+}
+header h2 {
+  border: none;
+  margin-top: 1em;
+  font-size: 1.5em;
+  font-weight: 400;
+}
+h2 {
+  border-bottom: 1px solid #ccc;
+  margin-top: 2em;
+  padding-bottom: 0.125em;
+}
+
+form[action="/go"] {
+  margin: 2em auto 15px;
+  text-align: center;
+  max-width: 350px;
+}
 form[action="/go"] input.btn {
   min-width: 120px;
+}
+.input-group {
+  margin-bottom: 15px;
+}
+
+.expander {
+  display: none;
+}
+.share {
+  text-align: center;
+  margin: 80px 0 45px;
 }
   </style>
 </head>
 <body ga="<%= ENV["GOOGLE_ANALYTICS_ID"] %>">
   <header>
     <img src="/img/icon128.png" width="128" height="128" alt="Icon" itemprop="image">
-    <hgroup>
-      <h1 itemprop="name">GitHub Activity RSS Feed</h1>
-      <h2 itemprop="description">Subscribe to your gist comments</h2>
-    </hgroup>
+    <h1 itemprop="name">GitHub Activity RSS Feed</h1>
+    <h2 itemprop="description">Subscribe to your gist comments</h2>
   </header>
 
-  <form class="topbar input-group" method="get" action="/go" target="_self">
+  <form class="input-group" method="get" action="/go" target="_self">
     <input class="form-control" type="search" name="q" placeholder="Your GitHub username" pattern="[a-zA-Z0-9\-]+" title="Input a GitHub username, not a url.">
     <span class="input-group-btn">
       <input class="btn btn-primary" type="submit" value="Get RSS Feed">
@@ -51,14 +101,19 @@ form[action="/go"] input.btn {
   <div class="text-center">
     For comments on secret gists, you have to <a href="/auth">authenticate</a>.
   </div>
+  <script>
+  document.querySelector("a[href='/auth']").addEventListener("click", function(e) {
+    alert("Note: GitHub does not have a separate scope for read-only access to gists. In order to grant access to private gists, you must also grant write access.\n\nThis website will never write to your gists!");
+  });
+  </script>
   <%- end -%>
 
   <div class="container">
     <h2>About</h2>
 
-    <p>GitHub does not notify you when you receive comments on your gists. That's why I created this website, which gives you a convenient RSS feed you can subscribe to.</p>
+    <p>GitHub does not notify you when you receive comments on your gists. That's why I created this website, which gives you a convenient RSS feed that you can subscribe to.</p>
 
-    <p>For now this feed only gives you comments on your gists. Later I might implement notifications when people commit to forks from your stuff, etc. Post ideas as issues <a href="https://github.com/stefansundin/github-activity">on GitHub</a>.</p>
+    <p>For now this feed only gives you comments on your gists. Later, I might implement notifications when people commit to forks from your stuff, etc. Post ideas as issues <a href="https://github.com/stefansundin/github-activity">on GitHub</a>.</p>
 
 
     <h2>Donate</h2>
@@ -79,13 +134,15 @@ form[action="/go"] input.btn {
       </div>
     </form>
 
-    <p><small><a class="expander" expand="donation-options">Show other donation options: Bitcoin, Square Cash.</a></small></p>
-    <div class="expandable" id="donation-options">
+    <p><small><a class="expander" expand="donation-options">Show other donation options: Bitcoin, Square Cash, ChangeTip.</a></small></p>
+    <div id="donation-options">
       <p>Other donation options:</p>
       <ul>
         <li>Bitcoin: <tt>1EhDUbc5MjC6JavC6idKiTCxnqSxY2sbTX</tt> (<a href="https://stefansundin.github.io/img/btc-qr.png">QR code</a>)</li>
         <li>Square Cash: <a href="https://cash.me/$StefanSundin">$StefanSundin</a></li>
+        <li>ChangeTip: <a href="https://www.changetip.com/tipme/stefansundin">stefansundin</a></li>
       </ul>
+      <p>Contact me at <a fubar>stefaNStefansundinCom</a> if none of the above work.</p>
     </div>
 
 
@@ -120,5 +177,6 @@ form[action="/go"] input.btn {
   <script src="https://stefansundin.github.io/js/ga.js"></script>
   <%- end -%>
   <script src="https://stefansundin.github.io/js/main.js"></script>
+  <script src="https://stefansundin.github.io/js/fubar.js"></script>
 </body>
 </html>

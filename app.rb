@@ -1,7 +1,6 @@
 require "sinatra"
 require "./config/application"
 require "./github_party"
-require "erb"
 
 def format_date(date)
   date.gsub("T", " ").gsub("Z", " UTC")
