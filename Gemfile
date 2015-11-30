@@ -16,9 +16,7 @@ gem "clogger"
 gem "mail"
 gem "heroku-env"
 gem "encrypted_strings"
-
-# nokogiri 1.6.6.2 is not compatible with Cygwin
-gem "nokogiri", "1.6.7.rc3"
+gem "nokogiri"
 
 source "https://repo.fury.io/stefansundin/" do
   gem "pingback"
