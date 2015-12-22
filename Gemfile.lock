@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   remote: https://repo.fury.io/stefansundin/
   specs:
-    airbrake (5.0.0)
+    airbrake (5.0.1)
       airbrake-ruby (~> 1.0)
     airbrake-ruby (1.0.0)
     backports (3.6.7)
