@@ -39,7 +39,7 @@ get "/:user.xml" do |user|
   @gist_comments.reject! { |id, c| c["user"]["login"] == @user rescue true }
   @gist_comments.sort_by! { |id, c| c["created_at"] }.reverse!
 
-  headers "Content-Type" => "application/atom+xml;charset=utf-8"
+  content_type :atom
   erb :feed
 end
 
@@ -66,7 +66,7 @@ get "/token/*" do |token|
     @gist_comments.reject! { |id, c| c["user"]["login"] == @user rescue true }
     @gist_comments.sort_by! { |id, c| c["created_at"] }.reverse!
 
-    headers "Content-Type" => "application/atom+xml;charset=utf-8"
+    content_type :atom
     erb :feed
   rescue TokenRevokedError => e
     status 401
@@ -117,7 +117,7 @@ get %r{^/apple-touch-icon} do
 end
 
 get "/opensearch" do
-  headers "Content-Type" => "application/opensearchdescription+xml"
+  content_type :opensearch
   <<-EOF
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
   <ShortName>GitHub Activity RSS Feed</ShortName>
@@ -139,24 +139,10 @@ end
 if ENV["LOADERIO_VERIFICATION_TOKEN"]
   /(loaderio-)?(?<loaderio_token>[0-9a-f]+)/ =~ ENV["LOADERIO_VERIFICATION_TOKEN"]
   get Regexp.new("^/loaderio-#{loaderio_token}") do
-    headers "Content-Type" => "text/plain"
+    content_type :text
     "loaderio-#{loaderio_token}"
   end
 end
-
-post %r{/xmlrpc} do
-  raise "PINGBACK_EMAIL not configured" unless ENV["PINGBACK_EMAIL"]
-
-  Pingback::Server.new(Proc.new { |source_uri, target_uri|
-    Mail.deliver do
-         from "Pingback <#{ENV["MAIL_FROM"]}>"
-           to ENV["PINGBACK_EMAIL"]
-      subject "New pingback for #{target_uri}"
-         body "Pingback to #{target_uri} from #{source_uri}"
-    end
-  }).call(env)
-end
-
 
 error do
   status 500

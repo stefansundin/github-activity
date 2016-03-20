@@ -4,22 +4,17 @@ ruby File.read(".ruby-version").strip
 
 gem "rack"
 gem "sinatra"
-gem "bundler"
 gem "unicorn"
 gem "redis"
-gem "redis-namespace"
 gem "httparty"
 gem "airbrake"
-gem "newrelic_rpm"
 gem "rack-ssl-enforcer"
 gem "clogger"
-gem "mail"
 gem "heroku-env"
 gem "encrypted_strings"
-gem "nokogiri"
 
-source "https://repo.fury.io/stefansundin/" do
-  gem "pingback"
+group :production do
+  gem "newrelic_rpm"
 end
 
 group :development do
