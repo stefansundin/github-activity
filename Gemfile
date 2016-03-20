@@ -12,13 +12,13 @@ gem "rack-ssl-enforcer"
 gem "clogger"
 gem "heroku-env"
 gem "encrypted_strings"
+gem "rake"
 
 group :production do
   gem "newrelic_rpm"
 end
 
 group :development do
-  gem "rake"
   gem "sinatra-reloader"
   gem "powder"
   gem "dotenv"
