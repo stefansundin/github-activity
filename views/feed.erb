@@ -11,7 +11,7 @@
   <entry>
     <id>gist:comment:<%= "#{c["id"]}:#{c["updated_at"]}" %></id>
     <title>Comment by <%= c["user"]["login"] %></title>
-    <link href="https://gist.github.com/<%= "#{@user}/#{id}#comment-#{c["id"]}" %>" />
+    <link href="https://gist.github.com/<%= "#{@user}/#{id}#gistcomment-#{c["id"]}" %>" />
     <updated><%= c["updated_at"] %></updated>
     <author><name><%= c["user"]["login"] %></name></author>
     <content type="html">
