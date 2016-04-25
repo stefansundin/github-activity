@@ -108,6 +108,11 @@ get "/callback" do
   erb :authed
 end
 
+get "/ratelimit" do
+  content_type :json
+  GithubParty.ratelimit.to_json
+end
+
 get "/favicon.ico" do
   redirect "/img/icon32.png"
 end
