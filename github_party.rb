@@ -10,6 +10,16 @@ class GithubPartyError < StandardError
   def request
     @request
   end
+
+  def data
+    @request.parsed_response
+  end
+
+  def message
+    @request.to_s
+  rescue
+    "#{@request.code} #{@request.body}"
+  end
 end
 
 class TokenRevokedError < GithubPartyError; end
@@ -36,7 +46,7 @@ class GithubParty
       r = self.class.get "/users/#{URI.encode(user)}/gists?page=#{page}", options
       process(r)
       return nil if r.code == 404
-      raise GithubPartyError, self.class.error(r) if not r.success?
+      raise GithubPartyError.new(r) if not r.success?
       break if r.parsed_response.count == 0
 
       entries = entries + r.parsed_response.reject { |gist| gist["comments"] == 0 }.map do |gist|
@@ -69,7 +79,7 @@ class GithubParty
     while true
       r = self.class.get "/gists/#{gist["id"]}/comments?page=#{page}", options
       process(r)
-      raise GithubPartyError, self.class.error(r) if not r.success?
+      raise GithubPartyError.new(r) if not r.success?
       break if r.parsed_response.count == 0
 
       comments = comments + r.parsed_response.map do |comment|
@@ -109,7 +119,7 @@ class GithubParty
     end
 
     r = self.class.get "/user", options
-    raise GithubPartyError, self.class.error(r) if not r.success?
+    raise GithubPartyError.new(r) if not r.success?
     login = r.parsed_response["login"]
     $redis.setex "username:#{@access_token}", 5*60, login
     login
@@ -127,7 +137,7 @@ class GithubParty
       r = self.class.get "/gists?page=#{page}", options
       process(r)
       return nil if r.code == 404
-      raise GithubPartyError, self.class.error(r) if not r.success?
+      raise GithubPartyError.new(r) if not r.success?
       break if r.parsed_response.count == 0
 
       entries = entries + r.parsed_response.reject { |gist| gist["comments"] == 0 }.map do |gist|
