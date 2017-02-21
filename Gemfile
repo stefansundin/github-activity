@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby File.read(".ruby-version").strip
+ruby "~> 2.4.0"
 
 gem "rack"
 gem "sinatra"
@@ -14,7 +14,7 @@ gem "heroku-env"
 gem "encrypted_strings"
 gem "rake"
 
-group :production do
+group :deployment do
   gem "newrelic_rpm"
 end
 

@@ -5,20 +5,26 @@
   "website": "https://github.com/stefansundin/github-activity",
   "logo": "https://stefansundin.github.io/github-activity/img/icon128.png",
   "success_url": "/",
-  "addons": ["heroku-redis:hobby-dev"],
+  "addons": [
+    {
+      "plan": "heroku-redis",
+      "options": {
+        "maxmemory": "allkeys-lru"
+      }
+    }],
   "keywords": ["github", "gist", "rss"],
   "env": {
-    "RACK_ENV": "production",
+    "RACK_ENV": "deployment",
     "GITHUB_CLIENT_ID": {
-      "description": "(Optional) Your GitHub app client id",
+      "description": "Your GitHub app client id.",
       "required": false
     },
     "GITHUB_CLIENT_SECRET": {
-      "description": "(Optional) Your GitHub app client secret",
+      "description": "Your GitHub app client secret.",
       "required": false
     },
     "ENCRYPTION_KEY": {
-      "description": "(Optional) Encryption key for authenticated tokens. Generate with `rake secret`.",
+      "description": "Encryption key for authenticated tokens. ProTip: generate with `rake secret`.",
       "required": false
     }
   }
