@@ -97,7 +97,7 @@ form[action="/go"] input.btn {
   });
   </script>
 
-  <%- if ENV["GITHUB_CLIENT_ID"] and ENV["GITHUB_CLIENT_SECRET"] and ENV["ENCRYPTION_KEY"] -%>
+  <%- if ENV["GITHUB_CLIENT_ID"] && ENV["GITHUB_CLIENT_SECRET"] && ENV["ENCRYPTION_KEY"] -%>
   <div class="text-center">
     For comments on secret gists, you have to <a href="/auth">authenticate</a>.
   </div>
@@ -154,18 +154,6 @@ form[action="/go"] input.btn {
     <p>Made by Stefan Sundin.</p>
 
     <p>You can <a href="https://stefansundin.github.io/">browse my other projects</a>, or <a href="https://stefansundin.com/">visit my personal website</a>.</p>
-
-
-    <h2>Danger Zone</h2>
-
-    <p>
-      Remaining GitHub ratelimit: <%= "%s / %s" % [@ratelimit[:remaining] || @ratelimit[:limit] || "unknown", @ratelimit[:limit] || "unknown"] %>.
-      <%= "Resets in %d min." % [(@ratelimit[:reset]-Time.now)/60] if @ratelimit[:reset] %>
-    </p>
-
-    <p><a class="btn btn-danger" href="/flush"><span class="glyphicon glyphicon-trash"></span> Flush cache</a></p>
-
-    <p>This button clears the redis cache. Only use in emergencies.</p>
 
 
     <div class="share">

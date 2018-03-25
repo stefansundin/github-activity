@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class NilClass
-  def empty?
-    true
+  def presence
+    nil
   end
 end

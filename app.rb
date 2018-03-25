@@ -2,8 +2,8 @@
 # export RUBYOPT=--enable-frozen-string-literal
 
 require "sinatra"
+require "base64"
 require "./config/application"
-require "./github_party"
 
 def format_date(date)
   date.gsub("T", " ").gsub("Z", " UTC")
@@ -14,36 +14,37 @@ before do
 end
 
 get "/" do
-  @ratelimit = GithubParty.ratelimit
   erb :index
 end
 
 get "/go" do
-  params[:q] = "stefansundin" if params[:q].empty?
-  redirect "/#{params[:q]}.xml"
+  response = GitHub.graphql(:get_user, {
+    "user": params[:q].presence || "stefansundin",
+  })
+  data = response.json
+
+  if data["errors"]
+    status 400
+    return data["errors"][0]["message"]
+  end
+
+  redirect "/#{data["data"]["user"]["login"]}.xml"
 end
 
 get "/:user.xml" do |user|
-  client = GithubParty.new
-  @user = user
-  gists = client.gists @user
+  # TODO: paginate if there are > 100 gists
+  response = GitHub.graphql(:gists, {
+    "user": user,
+  })
+  data = response.json
 
-  return "Unfortunately there does not seem to be a user with the name #{@user}." if gists.nil?
+  if data["errors"]
+    status 400
+    return data["errors"][0]["message"]
+  end
 
-  @gist_comments = gists.map do |gist|
-    comments = client.gist_comments gist
-    comments.map do |comment|
-      [ gist["id"], comment ]
-    end
-  end.flatten(1)
-
-  # write the latest ratelimit values to redis
-  client.finalize
-
-  # remove your own comments, then sort
-  # c["user"] can be null, I think this is if a user was deleted
-  @gist_comments.reject! { |id, c| c["user"]["login"] == @user rescue true }
-  @gist_comments.sort_by! { |id, c| c["created_at"] }.reverse!
+  @user = data["data"]["user"]["login"]
+  @comments = GitHub.process_gists(data["data"]["user"]["gists"], @user)
 
   erb :feed
 end
@@ -52,44 +53,22 @@ get "/token/*" do |token|
   begin
     access_token = token.decrypt(:symmetric, password: ENV["ENCRYPTION_KEY"])
   rescue
+    status 400
     return "Could not decrypt token, sorry."
   end
-  begin
-    client = GithubParty.new(access_token)
-    @user = client.username
-    gists = client.my_gists
 
-    @gist_comments = gists.map do |gist|
-      comments = client.gist_comments gist
-      comments.map do |comment|
-        [ gist["id"], comment ]
-      end
-    end.flatten(1)
+  response = GitHub.graphql(:authed_gists, nil, access_token)
+  data = response.json
 
-    # remove your own comments, then sort
-    # c["user"] can be null, I think this is if a user was deleted
-    @gist_comments.reject! { |id, c| c["user"]["login"] == @user rescue true }
-    @gist_comments.sort_by! { |id, c| c["created_at"] }.reverse!
-
-    erb :feed
-  rescue TokenRevokedError => e
-    status 401
-    return "The token does not seem to work, did you revoke it?"
+  if data["errors"]
+    status 400
+    return data["errors"][0]["message"]
   end
-end
 
-get "/flush" do
-  $redis.keys.each do |key|
-    $redis.del key if key.start_with?("gist")
-  end
-  "Cache cleared"
-end
+  @user = data["data"]["viewer"]["login"]
+  @comments = GitHub.process_gists(data["data"]["viewer"]["gists"], @user)
 
-get "/flushall" do
-  if self.class.environment == :production
-    return "forbidden in production"
-  end
-  $redis.flushall
+  erb :feed
 end
 
 get "/auth" do
@@ -97,24 +76,16 @@ get "/auth" do
 end
 
 get "/callback" do
-  begin
-    access_token = GithubParty.authenticate(request.env["rack.request.query_hash"]["code"])
-  rescue GithubPartyError => e
-    return e.request.parsed_response["error_description"]
-  end
+  data = GitHub.authenticate(request.env["rack.request.query_hash"]["code"])
+  access_token = data.json["access_token"]
 
-  client = GithubParty.new(access_token)
-  @username = client.username
+  response = GitHub.graphql(:whoami, nil, access_token)
+  @username = response.json["data"]["viewer"]["login"]
 
   encrypted_token = access_token.encrypt(:symmetric, password: ENV["ENCRYPTION_KEY"]).gsub("\n", "")
   @url = "#{request.base_url}/token/#{encrypted_token}"
 
   erb :authed
-end
-
-get "/ratelimit" do
-  content_type :json
-  GithubParty.ratelimit.to_json
 end
 
 get "/favicon.ico" do
@@ -138,6 +109,7 @@ end
 
 if ENV["BING_VERIFICATION_TOKEN"]
   get "/BingSiteAuth.xml" do
+    content_type :xml
     <<~EOF
       <?xml version="1.0"?>
       <users>
@@ -154,9 +126,4 @@ end
 
 not_found do
   "Sorry, that route does not exist."
-end
-
-error GithubPartyError do
-  status 503
-  "There was a problem talking to GitHub."
 end

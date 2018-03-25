@@ -23,13 +23,9 @@ GEM
     github-release-party (0.2.3)
       addressable (~> 2)
       rake (~> 12)
-    heroku-env (0.1.4)
-    httparty (0.16.1)
-      multi_xml (>= 0.5.2)
     kgio (2.11.2)
     method_source (0.9.0)
     multi_json (1.13.1)
-    multi_xml (0.6.0)
     mustermann (1.0.2)
     newrelic_rpm (4.8.0.341)
     powder (0.4.0)
@@ -47,7 +43,6 @@ GEM
     rack-ssl-enforcer (0.2.9)
     raindrops (0.19.0)
     rake (12.3.1)
-    redis (4.0.1)
     sinatra (2.0.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
@@ -80,15 +75,12 @@ DEPENDENCIES
   dotenv
   encrypted_strings
   github-release-party
-  heroku-env
-  httparty
   newrelic_rpm
   powder
   pry-remote
   rack
   rack-ssl-enforcer
   rake
-  redis
   sinatra
   sinatra-reloader
   unicorn

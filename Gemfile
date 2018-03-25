@@ -6,11 +6,9 @@ gem "rake", require: false
 gem "rack"
 gem "sinatra"
 gem "unicorn"
-gem "redis"
-gem "httparty"
+gem "dotenv"
 gem "rack-ssl-enforcer"
 gem "clogger"
-gem "heroku-env"
 gem "encrypted_strings"
 
 group :production do
@@ -21,7 +19,6 @@ end
 group :development do
   gem "sinatra-reloader"
   gem "powder"
-  gem "dotenv"
   gem "binding_of_caller"
   gem "better_errors"
   gem "pry-remote"

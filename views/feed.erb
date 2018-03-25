@@ -6,17 +6,17 @@
   <icon>https://assets-cdn.github.com/favicon.ico</icon>
   <link href="<%= request.url %>" rel="self" />
   <link href="https://github.com/<%= @user %>" rel="alternate" />
-  <updated><%= @gist_comments[0][1]["updated_at"] if @gist_comments[0] %></updated>
-<%- @gist_comments.each do |id, c| -%>
+  <updated><%= @comments[0]["lastEditedAt"] if @comments[0] %></updated>
+<%- @comments.each do |c| -%>
 
   <entry>
-    <id>gist:comment:<%= "#{c["id"]}:#{c["updated_at"]}" %></id>
-    <title>Comment by <%= c["user"]["login"] %></title>
-    <link href="https://gist.github.com/<%= "#{@user}/#{id}#gistcomment-#{c["id"]}" %>" />
-    <updated><%= c["updated_at"] %></updated>
-    <author><name><%= c["user"]["login"] %></name></author>
+    <id>gist:comment:<%= "#{c["comment_id"]}:#{c["lastEditedAt"]}" %></id>
+    <title>Comment by <%= c["author"]["login"] %></title>
+    <link href="https://gist.github.com/<%= "#{@user}/#{c["gist_id"]}#gistcomment-#{c["comment_id"]}" %>" />
+    <updated><%= c["lastEditedAt"] %></updated>
+    <author><name><%= c["author"]["login"] %></name></author>
     <content type="html">
-&lt;p>User <%= c["user"]["login"] %> commented on &lt;a href="https://gist.github.com/<%= "#{@user}/#{id}" %>"><%= id %>&lt;/a> at <%= format_date(c["created_at"]) %>:&lt;/p>
+&lt;p>User <%= c["author"]["login"] %> commented on &lt;a href="https://gist.github.com/<%= "#{@user}/#{c["gist_id"]}" %>"><%= c["gist_id"] %>&lt;/a> at <%= format_date(c["createdAt"]) %>:&lt;/p>
 &lt;pre>
 <%= CGI.escapeHTML(c["body"]).gsub(/&([lg])t;/, '&amp;\1t;') %>
 &lt;/pre>

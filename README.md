@@ -7,8 +7,12 @@ You can use this app freely at [gh-rss.herokuapp.com](https://gh-rss.herokuapp.c
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/stefansundin/github-activity)
 
-Data is cached in redis. You have to [verify](https://heroku.com/verify) your Heroku account to add the free redis addon.
+You need to create a GitHub access token:
+- https://github.com/settings/tokens
+  - This token should not be assigned any scopes!
 
+To allow people to authorize for private gists, you need to create a GitHub app:
+- https://github.com/settings/developers
 
 ## TODO
 
