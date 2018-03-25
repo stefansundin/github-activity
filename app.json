@@ -15,7 +15,7 @@
   ],
   "keywords": ["github", "gist", "rss"],
   "env": {
-    "RACK_ENV": "deployment",
+    "APP_ENV": "production",
     "GITHUB_CLIENT_ID": {
       "description": "Your GitHub app client id.",
       "required": false

@@ -1,6 +1,8 @@
-environment = ENV["RACK_ENV"] || "development"
+# frozen_string_literal: true
 
-if environment == "development"
+ENV["APP_ENV"] ||= "development"
+
+if ENV["APP_ENV"] == "development"
   require "github-release-party/tasks/heroku"
 end
 

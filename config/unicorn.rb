@@ -1,5 +1,7 @@
-ENV["RACK_ENV"] ||= "development"
-if ENV["RACK_ENV"] == "development"
+# frozen_string_literal: true
+
+ENV["APP_ENV"] ||= "development"
+if ENV["APP_ENV"] == "development"
   # better_errors and binding_of_caller works better with only one process
   worker_processes 1
 else

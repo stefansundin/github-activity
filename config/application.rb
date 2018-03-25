@@ -1,7 +1,9 @@
-ENV["RACK_ENV"] ||= "development"
+# frozen_string_literal: true
+
+ENV["APP_ENV"] ||= "development"
 
 require "bundler/setup"
-Bundler.require(:default, ENV["RACK_ENV"])
+Bundler.require(:default, ENV["APP_ENV"])
 
 configure do
   set :erb, trim: "-"
