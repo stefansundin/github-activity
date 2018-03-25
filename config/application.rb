@@ -6,16 +6,18 @@ require "bundler/setup"
 Bundler.require(:default, ENV["APP_ENV"])
 
 configure do
+  use Rack::SslEnforcer, only_hosts: /\.herokuapp\.com$/
   set :erb, trim: "-"
   # Look up Rack::Mime::MIME_TYPES to see rack defaults
   mime_type :opensearch, "application/opensearchdescription+xml"
   settings.add_charset << "application/atom+xml"
 end
 
-# development specific
 configure :development do
-  use BetterErrors::Middleware
-  BetterErrors.application_root = File.expand_path(".")
+  if defined?(BetterErrors)
+    use BetterErrors::Middleware
+    BetterErrors.application_root = File.expand_path("..")
+  end
 end
 
 app_path = File.expand_path("../..", __FILE__)

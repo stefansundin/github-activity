@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# export RUBYOPT=--enable-frozen-string-literal
+
 require "sinatra"
 require "./config/application"
 require "./github_party"
@@ -6,6 +9,9 @@ def format_date(date)
   date.gsub("T", " ").gsub("Z", " UTC")
 end
 
+before do
+  content_type :text
+end
 
 get "/" do
   @ratelimit = GithubParty.ratelimit
@@ -39,7 +45,6 @@ get "/:user.xml" do |user|
   @gist_comments.reject! { |id, c| c["user"]["login"] == @user rescue true }
   @gist_comments.sort_by! { |id, c| c["created_at"] }.reverse!
 
-  content_type :atom
   erb :feed
 end
 
@@ -66,7 +71,6 @@ get "/token/*" do |token|
     @gist_comments.reject! { |id, c| c["user"]["login"] == @user rescue true }
     @gist_comments.sort_by! { |id, c| c["created_at"] }.reverse!
 
-    content_type :atom
     erb :feed
   rescue TokenRevokedError => e
     status 401
@@ -122,16 +126,7 @@ get %r{/apple-touch-icon.+} do
 end
 
 get "/opensearch" do
-  content_type :opensearch
-  <<-EOF
-<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
-  <ShortName>GitHub Activity RSS Feed</ShortName>
-  <Description>GitHub Activity RSS Feed</Description>
-  <InputEncoding>UTF-8</InputEncoding>
-  <Image width="16" height="16" type="image/x-icon">#{request.base_url}/favicon.ico</Image>
-  <Url type="text/html" method="get" template="#{request.base_url}/go?q={searchTerms}" />
-</OpenSearchDescription>
-EOF
+  erb :opensearch
 end
 
 if ENV["GOOGLE_VERIFICATION_TOKEN"]
@@ -141,9 +136,24 @@ if ENV["GOOGLE_VERIFICATION_TOKEN"]
   end
 end
 
+if ENV["BING_VERIFICATION_TOKEN"]
+  get "/BingSiteAuth.xml" do
+    <<~EOF
+      <?xml version="1.0"?>
+      <users>
+        <user>#{ENV["BING_VERIFICATION_TOKEN"]}</user>
+      </users>
+    EOF
+  end
+end
+
 error do
   status 500
   "Sorry, a nasty error occurred: #{env["sinatra.error"].message}"
+end
+
+not_found do
+  "Sorry, that route does not exist."
 end
 
 error GithubPartyError do

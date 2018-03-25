@@ -1,0 +1,8 @@
+<%- content_type :opensearch -%>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>GitHub Activity RSS Feed</ShortName>
+  <Description>Enter your GitHub username</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="16" height="16" type="image/x-icon"><%= request.base_url %>/favicon.ico</Image>
+  <Url type="text/html" method="get" template="<%= request.base_url %>/go?q={searchTerms}" />
+</OpenSearchDescription>

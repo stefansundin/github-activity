@@ -1,2 +1,4 @@
-# listens on port 3000 unless port is specified as first argument
-APP_ENV=production bundle exec unicorn -p ${1-3000} -c config/unicorn.rb -N
+#!/bin/bash
+# listens on port 3000 unless PORT is specified
+echo http://localhost:${PORT-3000}/
+APP_ENV=production bundle exec unicorn -p ${PORT-3000} -c config/unicorn.rb -N

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # This is a GitHub party, and everyone's invited!
 
 require "httparty"
