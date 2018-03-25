@@ -28,20 +28,16 @@ class GitHub
         user(login: $user) {
           login
           gists(last: 100) {
-            edges {
-              node {
-                name
-                comments(last: 5) {
-                  edges {
-                    node {
-                      id
-                      createdAt
-                      lastEditedAt
-                      body
-                      author {
-                        login
-                      }
-                    }
+            nodes {
+              name
+              comments(last: 5) {
+                nodes {
+                  id
+                  createdAt
+                  lastEditedAt
+                  body
+                  author {
+                    login
                   }
                 }
               }
@@ -55,19 +51,15 @@ class GitHub
         viewer {
           login
           gists(last: 100, privacy: ALL) {
-            edges {
-              node {
-                comments(last: 5) {
-                  edges {
-                    node {
-                      id
-                      createdAt
-                      lastEditedAt
-                      body
-                      author {
-                        login
-                      }
-                    }
+            nodes {
+              comments(last: 5) {
+                nodes {
+                  id
+                  createdAt
+                  lastEditedAt
+                  body
+                  author {
+                    login
                   }
                 }
               }
@@ -122,8 +114,8 @@ class GitHub
   end
 
   def self.process_gists(gists, user)
-    gists["edges"].map do |gist|
-      gist["node"]["comments"]["edges"].map { |e| e["node"] }.reject do |comment|
+    gists["nodes"].map do |gist|
+      gist["comments"]["nodes"].reject do |comment|
         comment["author"]["login"] == @user
       end
     end.flatten.each do |comment|
