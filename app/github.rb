@@ -23,13 +23,16 @@ class GitHub
         }
       }
     EOF
-    gists: <<~EOF.delete(" "),
+    first_page: <<~EOF.delete(" "),
       query ($user: String!) {
         user(login: $user) {
           login
-          gists(last: 100) {
+          gists(first: 100) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
             nodes {
-              name
               comments(last: 5) {
                 nodes {
                   id
@@ -46,11 +49,65 @@ class GitHub
         }
       }
     EOF
-    authed_gists: <<~EOF.delete(" "),
+    next_page: <<~EOF.delete(" "),
+      query ($user: String!, $cursor: String!) {
+        user(login: $user) {
+          gists(first: 100, after: $cursor) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            nodes {
+              comments(last: 5) {
+                nodes {
+                  id
+                  createdAt
+                  lastEditedAt
+                  body
+                  author {
+                    login
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    EOF
+    authed_first_page: <<~EOF.delete(" "),
       {
         viewer {
           login
-          gists(last: 100, privacy: ALL) {
+          gists(first: 100, privacy: ALL) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+            nodes {
+              comments(last: 5) {
+                nodes {
+                  id
+                  createdAt
+                  lastEditedAt
+                  body
+                  author {
+                    login
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    EOF
+    authed_next_page: <<~EOF.delete(" "),
+      query ($cursor: String!) {
+        viewer {
+          gists(first: 100, privacy: ALL, after: $cursor) {
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
             nodes {
               comments(last: 5) {
                 nodes {
@@ -116,7 +173,7 @@ class GitHub
   def self.process_gists(gists, user)
     gists["nodes"].map do |gist|
       gist["comments"]["nodes"].reject do |comment|
-        comment["author"]["login"] == @user
+        comment["author"]["login"] == user
       end
     end.flatten.each do |comment|
       comment["lastEditedAt"] ||= comment["createdAt"]
@@ -126,9 +183,7 @@ class GitHub
       id_parts = comment["id"].split(":")
       comment["gist_id"] = id_parts[1]["GistComment".length..-1]
       comment["comment_id"] = id_parts[2]
-    end.sort_by do |comment|
-      comment["updated_at"]
-    end.reverse
+    end
   end
 end
 

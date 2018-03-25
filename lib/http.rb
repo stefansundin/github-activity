@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "net/http"
+
 class HTTPResponse
   def initialize(response, url)
     @response = response

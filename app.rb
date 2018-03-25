@@ -32,9 +32,8 @@ get "/go" do
 end
 
 get "/:user.xml" do |user|
-  # TODO: paginate if there are > 100 gists
-  response = GitHub.graphql(:gists, {
-    "user": user,
+  response = GitHub.graphql(:first_page, {
+    user: user,
   })
   data = response.json
 
@@ -45,6 +44,20 @@ get "/:user.xml" do |user|
 
   @user = data["data"]["user"]["login"]
   @comments = GitHub.process_gists(data["data"]["user"]["gists"], @user)
+
+  while data["data"]["user"]["gists"]["pageInfo"]["hasNextPage"]
+    response = GitHub.graphql(:next_page, {
+      user: @user,
+      cursor: data["data"]["user"]["gists"]["pageInfo"]["endCursor"],
+    })
+    data = response.json
+    if data["errors"]
+      status 400
+      return data["errors"][0]["message"]
+    end
+    @comments.push(*GitHub.process_gists(data["data"]["user"]["gists"], @user))
+  end
+  @comments.sort_by! { |c| c["updated_at"] }.reverse!
 
   erb :feed
 end
@@ -57,7 +70,7 @@ get "/token/*" do |token|
     return "Could not decrypt token, sorry."
   end
 
-  response = GitHub.graphql(:authed_gists, nil, access_token)
+  response = GitHub.graphql(:authed_first_page, nil, access_token)
   data = response.json
 
   if data["errors"]
@@ -67,6 +80,19 @@ get "/token/*" do |token|
 
   @user = data["data"]["viewer"]["login"]
   @comments = GitHub.process_gists(data["data"]["viewer"]["gists"], @user)
+
+  while data["data"]["viewer"]["gists"]["pageInfo"]["hasNextPage"]
+    response = GitHub.graphql(:authed_next_page, {
+      cursor: data["data"]["viewer"]["gists"]["pageInfo"]["endCursor"],
+    }, access_token)
+    data = response.json
+    if data["errors"]
+      status 400
+      return data["errors"][0]["message"]
+    end
+    @comments.push(*GitHub.process_gists(data["data"]["viewer"]["gists"], @user))
+  end
+  @comments.sort_by! { |c| c["updated_at"] }.reverse!
 
   erb :feed
 end
