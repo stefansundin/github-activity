@@ -71,7 +71,7 @@ get "/:user.xml" do |user|
     end
     @comments.push(*GitHub.process_gists(data["data"]["user"]["gists"], @user))
   end
-  @comments.sort_by! { |c| c["updated_at"] }.reverse!
+  @comments = @comments.sort_by { |c| c["updated_at"] }.reverse[0...20]
 
   erb :feed
 end
@@ -112,7 +112,7 @@ get "/token/*" do |token|
     end
     @comments.push(*GitHub.process_gists(data["data"]["viewer"]["gists"], @user))
   end
-  @comments.sort_by! { |c| c["updated_at"] }.reverse!
+  @comments = @comments.sort_by { |c| c["updated_at"] }.reverse[0...20]
 
   erb :feed
 end
