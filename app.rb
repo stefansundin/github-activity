@@ -33,6 +33,7 @@ get "/go" do
   response = GitHub.graphql(:get_user, {
     "user": params[:q].presence || "stefansundin",
   })
+  raise(GitHubError, response) if !response.success?
   data = response.json
 
   if data["errors"]
@@ -47,6 +48,7 @@ get "/:user.xml" do |user|
   response = GitHub.graphql(:first_page, {
     user: user,
   })
+  raise(GitHubError, response) if !response.success?
   data = response.json
 
   if data["errors"]
@@ -83,6 +85,11 @@ get "/token/*" do |token|
   end
 
   response = GitHub.graphql(:authed_first_page, nil, access_token)
+  if response.code == 401
+    status response.code
+    return "The token does not seem to work, did you revoke it?"
+  end
+  raise(GitHubError, response) if !response.success?
   data = response.json
 
   if data["errors"]
@@ -97,6 +104,7 @@ get "/token/*" do |token|
     response = GitHub.graphql(:authed_next_page, {
       cursor: data["data"]["viewer"]["gists"]["pageInfo"]["endCursor"],
     }, access_token)
+    raise(GitHubError, response) if !response.success?
     data = response.json
     if data["errors"]
       status 400
@@ -114,10 +122,12 @@ get "/auth" do
 end
 
 get "/callback" do
-  data = GitHub.authenticate(request.env["rack.request.query_hash"]["code"])
-  access_token = data.json["access_token"]
+  response = GitHub.authenticate(request.env["rack.request.query_hash"]["code"])
+  raise(GitHubError, response) if !response.success? || response.json["error"]
+  access_token = response.json["access_token"]
 
   response = GitHub.graphql(:whoami, nil, access_token)
+  raise(GitHubError, response) if !response.success?
   @username = response.json["data"]["viewer"]["login"]
 
   encrypted_token = access_token.encrypt(:symmetric, password: ENV["ENCRYPTION_KEY"]).gsub("\n", "")
