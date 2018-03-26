@@ -13,6 +13,18 @@ before do
   content_type :text
 end
 
+if ENV["BING_VERIFICATION_TOKEN"]
+  get "/BingSiteAuth.xml" do
+    content_type :xml
+    <<~EOF
+      <?xml version="1.0"?>
+      <users>
+        <user>#{ENV["BING_VERIFICATION_TOKEN"]}</user>
+      </users>
+    EOF
+  end
+end
+
 get "/" do
   erb :index
 end
@@ -130,18 +142,6 @@ if ENV["GOOGLE_VERIFICATION_TOKEN"]
   /(google)?(?<google_token>[0-9a-f]+)(\.html)?/ =~ ENV["GOOGLE_VERIFICATION_TOKEN"]
   get "/google#{google_token}.html" do
     "google-site-verification: google#{google_token}.html"
-  end
-end
-
-if ENV["BING_VERIFICATION_TOKEN"]
-  get "/BingSiteAuth.xml" do
-    content_type :xml
-    <<~EOF
-      <?xml version="1.0"?>
-      <users>
-        <user>#{ENV["BING_VERIFICATION_TOKEN"]}</user>
-      </users>
-    EOF
   end
 end
 
