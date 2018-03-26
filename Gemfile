@@ -5,7 +5,7 @@ ruby "~> 2.5.0"
 gem "rake", require: false
 gem "rack"
 gem "sinatra"
-gem "unicorn"
+gem "puma"
 gem "dotenv"
 gem "addressable"
 gem "rack-ssl-enforcer"
