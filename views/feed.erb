@@ -17,9 +17,7 @@
     <author><name><%= c["author"]["login"] %></name></author>
     <content type="html">
 &lt;p>User <%= c["author"]["login"] %> commented on &lt;a href="https://gist.github.com/<%= "#{@user}/#{c["gist_id"]}" %>"><%= c["gist_id"] %>&lt;/a> at <%= format_date(c["createdAt"]) %>:&lt;/p>
-&lt;pre>
-<%= CGI.escapeHTML(c["body"]).gsub(/&([lg])t;/, '&amp;\1t;') %>
-&lt;/pre>
+&lt;pre><%= CGI.escapeHTML(c["body"]).gsub(/&([lg])t;/, '&amp;\1t;') %>&lt;/pre>
     </content>
   </entry>
 <%- end -%>
