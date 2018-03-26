@@ -173,9 +173,13 @@ class GitHub
   def self.process_gists(gists, user)
     gists["nodes"].map do |gist|
       gist["comments"]["nodes"].reject do |comment|
-        comment["author"]["login"] == user
+        # author can be null.. probably if a user was deleted
+        comment["author"] != nil && comment["author"]["login"] == user
       end
     end.flatten.each do |comment|
+      if comment["author"] == nil
+        comment["author"] = {}
+      end
       comment["lastEditedAt"] ||= comment["createdAt"]
       comment["updated_at"] = Time.parse(comment["lastEditedAt"])
       comment["id"] = Base64.decode64(comment["id"])
