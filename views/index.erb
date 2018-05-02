@@ -1,6 +1,6 @@
 <%- content_type :html -%>
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
   <title>GitHub Activity RSS Feed</title>
 
@@ -8,11 +8,10 @@
   <meta name="author" content="Stefan Sundin">
   <meta name="description" content="GitHub Activity RSS Feed">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <link rel="icon" href="/img/icon32.png">
-  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha384-pdapHxIh7EYuwy6K7iE41uXVxGCXY0sAjBzaElYGJUrzwodck3Lx6IE2lA0rFREo" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+  <link rel="license" href="https://www.gnu.org/licenses/agpl-3.0.html" title="GNU AGPL 3.0 or later">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
   <link rel="alternate" type="application/atom+xml" href="https://github.com/stefansundin/github-activity/releases.atom" title="Release feed">
   <link rel="search" type="application/opensearchdescription+xml" href="/opensearch" title="GitHub Activity RSS Feed">
   <style>
@@ -22,6 +21,7 @@ body {
 }
 a {
   cursor: pointer;
+  color: #007bff !important;
 }
 .container {
   padding: 0;
@@ -62,7 +62,7 @@ form[action="/go"] input.btn {
   min-width: 120px;
 }
 .form-inline .input-group {
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 .expander {
@@ -84,9 +84,9 @@ form[action="/go"] input.btn {
 
   <form class="input-group" method="get" action="/go">
     <input class="form-control" type="search" name="q" placeholder="Your GitHub username" pattern="[a-zA-Z0-9\-]+" title="Input a GitHub username, not a url.">
-    <span class="input-group-btn">
+    <div class="input-group-append">
       <input class="btn btn-primary" type="submit" value="Get RSS Feed">
-    </span>
+    </div>
   </form>
   <script>
   document.querySelector('form[action="/go"]').addEventListener("submit", function(e) {
@@ -127,7 +127,9 @@ form[action="/go"] input.btn {
       <input type="hidden" name="cbt" value="Learn why you just became awesome">
       <div class="form-group">
         <div class="input-group">
-          <div class="input-group-addon">$</div>
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+          </div>
           <input type="hidden" name="currency_code" value="USD">
           <input class="form-control" type="text" name="amount" value="5.00" pattern="\d+\.?\d*" placeholder="Amount">
         </div>
