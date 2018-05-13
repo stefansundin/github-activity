@@ -118,6 +118,7 @@ get "/token/*" do |token|
 end
 
 get "/auth" do
+  headers({"X-Robots-Tag" => "noindex"})
   redirect "https://github.com/login/oauth/authorize?client_id=#{ENV["GITHUB_CLIENT_ID"]}&scope=gist"
 end
 
