@@ -8,9 +8,9 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
-    airbrake (7.3.5)
-      airbrake-ruby (~> 2.10)
-    airbrake-ruby (2.11.0)
+    airbrake (7.4.0)
+      airbrake-ruby (~> 2.12)
+    airbrake-ruby (2.12.0)
     backports (3.11.4)
     better_errors (2.5.0)
       coderay (>= 1.0.0)
@@ -29,7 +29,7 @@ GEM
     github-release-party (0.3.0)
       addressable (~> 2)
       rake (~> 12)
-    i18n (1.1.0)
+    i18n (1.1.1)
       concurrent-ruby (~> 1.0)
     method_source (0.9.0)
     minitest (5.11.3)
@@ -94,7 +94,7 @@ DEPENDENCIES
   sinatra-contrib
 
 RUBY VERSION
-   ruby 2.5.1p57
+   ruby 2.5.3p105
 
 BUNDLED WITH
-   1.16.5
+   1.16.6
