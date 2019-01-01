@@ -166,7 +166,7 @@ class GitHub
       response = http.request_post(uri.request_uri, nil, headers)
       return HTTPResponse.new(response, uri.to_s)
     end
-  rescue Net::OpenTimeout, Net::ReadTimeout, SocketError, Errno::ECONNREFUSED, Errno::ECONNRESET, OpenSSL::SSL::SSLError, EOFError
+  rescue Net::OpenTimeout, Net::ReadTimeout, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, SocketError, Errno::ECONNREFUSED, Errno::ECONNRESET, Errno::EHOSTUNREACH, OpenSSL::SSL::SSLError, Zlib::BufError, EOFError, ArgumentError
     raise(GitHubError, $!)
   end
 
