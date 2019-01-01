@@ -13,9 +13,3 @@ You need to create a GitHub access token:
 
 To allow people to authorize for private gists, you need to create a GitHub app:
 - https://github.com/settings/developers
-
-## TODO
-
-- [ ] Find modified forks.
-- [ ] Render markdown.
-- [ ] Follow by user id.
