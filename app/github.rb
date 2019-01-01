@@ -14,12 +14,18 @@ class GitHub
         user(login: $user) {
           login
         }
+        rateLimit {
+          remaining
+        }
       }
     EOF
     whoami: <<~EOF.delete(" "),
       {
         viewer {
           login
+        }
+        rateLimit {
+          remaining
         }
       }
     EOF
@@ -47,6 +53,9 @@ class GitHub
             }
           }
         }
+        rateLimit {
+          remaining
+        }
       }
     EOF
     next_page: <<~EOF.delete(" "),
@@ -71,6 +80,9 @@ class GitHub
               }
             }
           }
+        }
+        rateLimit {
+          remaining
         }
       }
     EOF
@@ -98,6 +110,9 @@ class GitHub
             }
           }
         }
+        rateLimit {
+          remaining
+        }
       }
     EOF
     authed_next_page: <<~EOF.delete(" "),
@@ -123,6 +138,9 @@ class GitHub
             }
           }
         }
+        rateLimit {
+          remaining
+        }
       }
     EOF
   }
@@ -140,11 +158,15 @@ class GitHub
         "User-Agent" => "github-activity",
         "Authorization" => "bearer #{token || ENV["GITHUB_TOKEN"]}",
       }
-      response = http.request_post(uri.request_uri, {
+      raw_response = http.request_post(uri.request_uri, {
         query: self::QUERIES[query],
         variables: variables,
       }.to_json, headers)
-      return HTTPResponse.new(response, uri.to_s)
+      response = HTTPResponse.new(raw_response, uri.to_s)
+      if response.json && response.json["data"] && response.json["data"]["rateLimit"] && response.json["data"]["rateLimit"]["remaining"]
+        $metrics[:ratelimit_remaining].set({}, response.json["data"]["rateLimit"]["remaining"])
+      end
+      return response
     end
   rescue Net::OpenTimeout, Net::ReadTimeout, SocketError, Errno::ECONNREFUSED, Errno::ECONNRESET, OpenSSL::SSL::SSLError, EOFError
     raise(GitHubError, $!)

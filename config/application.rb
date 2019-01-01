@@ -6,7 +6,9 @@ require "bundler/setup"
 Bundler.require(:default, ENV["APP_ENV"])
 
 configure do
+  use Rack::Deflater
   use Rack::SslEnforcer, only_hosts: /\.herokuapp\.com$/
+  use Prometheus::Middleware::Exporter
   set :erb, trim: "-"
   # Look up Rack::Mime::MIME_TYPES to see rack defaults
   mime_type :opensearch, "application/opensearchdescription+xml"
