@@ -164,7 +164,7 @@ class GitHub
       }.to_json, headers)
       response = HTTPResponse.new(raw_response, uri.to_s)
       if response.json && response.json["data"] && response.json["data"]["rateLimit"] && response.json["data"]["rateLimit"]["remaining"]
-        $metrics[:ratelimit_remaining].set({}, response.json["data"]["rateLimit"]["remaining"])
+        $metrics[:ratelimit_remaining].set(response.json["data"]["rateLimit"]["remaining"])
       end
       return response
     end

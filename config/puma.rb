@@ -23,3 +23,12 @@ bind("unix://#{app_path}/tmp/puma.sock")
 if ENV["LOG_ENABLED"]
   stdout_redirect("#{app_path}/log/puma-stdout.log", "#{app_path}/log/puma-stderr.log", true)
 end
+
+if ENV["WEB_CONCURRENCY"]
+  on_worker_shutdown do |index|
+    # Delete stale metric files on worker shutdown
+    Dir["#{app_path}/tmp/prometheus/*___#{Process.pid}.bin"].each do |file_path|
+      File.unlink(file_path)
+    end
+  end
+end
