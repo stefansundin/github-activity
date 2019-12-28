@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/stefansundin/prometheus-client.git
-  revision: 5256cdfb78d5bfec1b8fbb78dcc1a2eee6c8989f
-  branch: add-most_recent-aggregation
+  revision: 85ae16d36483ddf29d27dd67dce101b99c8dae78
+  branch: master
   specs:
     prometheus-client (1.0.0)
 

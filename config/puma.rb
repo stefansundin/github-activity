@@ -27,8 +27,6 @@ end
 if ENV["WEB_CONCURRENCY"]
   on_worker_shutdown do |index|
     # Delete stale metric files on worker shutdown
-    Dir["#{app_path}/tmp/prometheus/*___#{Process.pid}.bin"].each do |file_path|
-      File.unlink(file_path)
-    end
+    Prometheus::Client.config.data_store.clean_pid(Process.pid)
   end
 end
