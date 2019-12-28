@@ -9,7 +9,7 @@ if ENV["WEB_CONCURRENCY"]
   store_settings[:aggregation] = :most_recent
 end
 
-prometheus = Prometheus::Client.registry
+prometheus = Prometheus::Client.registry(labels: %i[app_version], preset_labels: { app_version: ENV["HEROKU_RELEASE_VERSION"] || "dev" })
 
 $metrics = {
   ratelimit_remaining: prometheus.gauge(:ratelimit_remaining, store_settings: store_settings, docstring: "Remaining GitHub ratelimit."),

@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/stefansundin/prometheus-client.git
-  revision: 85ae16d36483ddf29d27dd67dce101b99c8dae78
+  revision: 720fafbcc600cdf226c603445f1ec8b3814f5e6d
   branch: master
   specs:
     prometheus-client (1.0.0)
