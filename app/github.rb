@@ -20,7 +20,7 @@ class GitHub
       }
     EOF
     whoami: <<~EOF.delete(" "),
-      {
+      query {
         viewer {
           login
         }
@@ -87,7 +87,7 @@ class GitHub
       }
     EOF
     authed_first_page: <<~EOF.delete(" "),
-      {
+      query {
         viewer {
           login
           gists(first: 100, privacy: ALL) {
