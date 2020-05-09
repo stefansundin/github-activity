@@ -6,7 +6,7 @@ require "bundler/setup"
 Bundler.require(:default, ENV["APP_ENV"])
 
 configure do
-  use Rack::Deflater
+  use Rack::Deflater, sync: false
   use Rack::SslEnforcer, only_hosts: /\.herokuapp\.com$/
   use Prometheus::Middleware::Exporter
   set :erb, trim: "-"
