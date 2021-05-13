@@ -3,7 +3,7 @@
 # https://developer.github.com/v4/object/gistcomment/
 # https://developer.github.com/v4/changelog/
 # At the moment, anonymous access to the GraphQL API is not available:
-# https://platform.github.community/t/permit-access-without-oauth-token/2572
+# https://github.community/t/api-v4-permit-access-without-token/13833
 
 class GitHubError < HTTPError; end
 
