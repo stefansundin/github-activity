@@ -10,4 +10,12 @@ if ENV["AIRBRAKE_API_KEY"]
 
   use Airbrake::Rack::Middleware
   enable :raise_errors
+
+  Airbrake.add_filter do |notice|
+    # Ignore SIGTERM which is sent on deploy and restart
+    if notice[:errors].any? { |e| e[:type] == "SignalException" && e[:message] == "SIGTERM" }
+      notice.ignore!
+      next
+    end
+  end
 end
