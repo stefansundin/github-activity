@@ -7,13 +7,6 @@ You can use this app freely at [gh-rss.herokuapp.com](https://gh-rss.herokuapp.c
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/stefansundin/github-activity)
 
-You need to create a GitHub access token:
-- https://github.com/settings/tokens
-  - This token should not be assigned any scopes!
-
-To allow people to authorize for private gists, you need to create a GitHub app:
-- https://github.com/settings/developers
-
 ### Configuration
 
 - `GITHUB_TOKEN` is required for access to the GitHub GraphQL API. This is used for non-authenticated access. Generate a token [here](https://github.com/settings/tokens) with no scopes.
