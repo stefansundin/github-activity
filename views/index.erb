@@ -11,19 +11,18 @@
 
   <link rel="icon" href="/img/icon32.png">
   <link rel="license" href="https://www.gnu.org/licenses/agpl-3.0.html" title="GNU AGPL 3.0 or later">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
   <link rel="alternate" type="application/atom+xml" href="https://github.com/stefansundin/github-activity/releases.atom" title="Release feed">
   <link rel="search" type="application/opensearchdescription+xml" href="/opensearch" title="GitHub Activity RSS Feed">
   <style>
 body {
-  padding: 0 15px;
   margin-bottom: 100px;
 }
 a {
   cursor: pointer;
 }
-.container {
-  padding: 0;
+input:invalid {
+  color: red;
 }
 @media (min-width: 768px) {
   .container {
@@ -31,18 +30,12 @@ a {
   }
 }
 
-header {
-  margin-top: 25px;
-  text-align: center;
-}
 header h1 {
   font-size: 4em;
   font-weight: 700;
-  margin-bottom: 0.5em;
 }
 header h2 {
   border: none;
-  margin-top: 1em;
   font-size: 1.5em;
   font-weight: 400;
 }
@@ -53,59 +46,74 @@ h2 {
 }
 
 form[action="/go"] {
-  margin: 2em auto 15px;
-  text-align: center;
   max-width: 350px;
 }
-form[action="/go"] input.btn {
-  min-width: 130px;
+.form {
+  max-width: 600px;
 }
-.form-inline .input-group {
-  margin-right: 10px;
+#url {
+  direction: rtl;
+  text-overflow: ellipsis;
 }
 
-.expander {
+.javascript {
   display: none;
-  margin-top: 15px;
-  color: #007bff !important;
-}
-.share {
-  text-align: center;
-  margin: 80px 0 45px;
 }
   </style>
 </head>
 <body>
-  <header>
+  <header class="text-center mt-4">
     <img src="/img/icon128.png" width="128" height="128" alt="Icon" itemprop="image">
     <h1 itemprop="name">GitHub Activity RSS Feed</h1>
-    <h2 itemprop="description">Subscribe to your gist comments</h2>
+    <h2 itemprop="description" class="mt-4">Subscribe to your gist comments</h2>
   </header>
 
-  <form class="input-group" method="get" action="/go">
-    <input class="form-control" type="search" name="q" placeholder="Your GitHub username" pattern="[a-zA-Z0-9\-]+" title="Input a GitHub username, not a url.">
-    <div class="input-group-append">
-      <input class="btn btn-primary" type="submit" value="Get RSS Feed">
-    </div>
-  </form>
-  <script>
-  document.querySelector('form[action="/go"]').addEventListener("submit", function(e) {
-    this.getElementsByTagName("input")[1].value = "Working...";
-  });
-  </script>
-
-  <%- if ENV["GITHUB_CLIENT_ID"] && ENV["GITHUB_CLIENT_SECRET"] && ENV["ENCRYPTION_KEY"] -%>
-  <div class="text-center">
-    For comments on secret gists, you have to <a href="/auth">authenticate</a>.
-  </div>
-  <script>
-  document.querySelector('a[href="/auth"]').addEventListener("click", function(e) {
-    alert("Note: GitHub does not have a separate scope for read-only access to gists. In order to grant access to private gists, you must also grant write access.\n\nThis website will never write to your gists!");
-  });
-  </script>
-  <%- end -%>
-
   <div class="container">
+    <noscript>
+      <form class="input-group mx-auto mt-5 mb-3" method="get" action="/go">
+        <input class="form-control" type="search" name="q" placeholder="Your GitHub username" pattern="[a-zA-Z0-9\-]+" title="Input a GitHub username, not a url.">
+        <input class="btn btn-primary" type="submit" value="Get RSS Feed">
+      </form>
+    </noscript>
+
+    <div class="form mx-auto justify-content-md-center mt-4 mb-3 javascript">
+      <div class="input-group">
+        <input class="form-control text-center" type="search" id="username" placeholder="Enter your GitHub username here" pattern="[a-zA-Z0-9\-]+">
+      </div>
+
+      <div class="input-group mt-3">
+        <input class="form-control text-center" type="text" id="url" value="http://" readonly>
+        <a class="btn btn-secondary" id="open" target="_blank">Open</a>
+        <button class="btn btn-primary" id="copy">Copy</button>
+      </div>
+    </div>
+
+    <script>
+    function update() {
+      const username = document.getElementById("username").value || "your_username";
+      const url = `${window.location.origin}/${username}.xml`;
+      document.getElementById("url").value = url;
+      document.getElementById("open").href = url;
+    }
+    document.getElementById("username").addEventListener("input", update);
+    update();
+    document.getElementById("copy").addEventListener("click", function(e) {
+      document.getElementById("url").select();
+      document.execCommand("copy");
+    });
+    </script>
+
+    <%- if ENV.key?("GITHUB_CLIENT_ID") && ENV.key?("GITHUB_CLIENT_SECRET") && ENV.key?("ENCRYPTION_KEY") -%>
+    <div class="text-center">
+      For comments on secret gists, you have to <a href="/auth">authenticate</a>.
+    </div>
+    <script>
+    document.querySelector('a[href="/auth"]').addEventListener("click", function(e) {
+      alert("Note: GitHub does not have a separate scope for read-only access to gists. In order to grant access to private gists, you must also grant write access.\n\nThis website will never write to your gists!");
+    });
+    </script>
+    <%- end -%>
+
     <h2>About</h2>
 
     <p><s>GitHub does not notify you when you receive comments on your gists. That's why I created this website, which gives you a convenient RSS feed that you can subscribe to.</s></p>
@@ -119,33 +127,34 @@ form[action="/go"] input.btn {
 
     <p>I provide this service free of charge. If you find it useful, please make a donation. I greatly appreciate any support!</p>
 
-    <form method="post" action="https://www.paypal.com/cgi-bin/webscr" track="donate" target="_blank" class="form-inline">
+    <form method="post" action="https://www.paypal.com/cgi-bin/webscr" track="donate" target="_blank" class="row g-3 mb-3">
       <input type="hidden" name="cmd" value="_xclick">
       <input type="hidden" name="business" value="KYMVEK692RF5Q">
       <input type="hidden" name="item_name" value="GitHub RSS">
       <input type="hidden" name="item_number" value="GitHub RSS">
       <input type="hidden" name="no_shipping" value="1">
+      <input type="hidden" name="no_note" value="1">
       <input type="hidden" name="return" value="https://stefansundin.github.io/thx">
       <input type="hidden" name="cbt" value="Learn why you just became awesome">
-      <div class="form-group">
+      <div class="col-sm-4">
         <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="input-group-text">$</span>
-          </div>
+          <span class="input-group-text">$</span>
           <input type="hidden" name="currency_code" value="USD">
           <input class="form-control" type="text" name="amount" value="5.00" pattern="\d+\.?\d*" placeholder="Amount">
         </div>
       </div>
-      <input class="btn btn-success" type="submit" value="Donate with PayPal">
+      <div class="col-sm">
+        <input class="btn btn-success" type="submit" value="Donate with PayPal">
+      </div>
     </form>
 
-    <p><small><a class="expander" expand="donation-options">Show other donation options: Bitcoin.</a></small></p>
+    <p><small><a class="expander javascript" expand="donation-options">Show other donation options: Bitcoin.</a></small></p>
     <div id="donation-options">
       <p>Other donation options:</p>
       <ul>
         <li>Bitcoin: <tt>1EhDUbc5MjC6JavC6idKiTCxnqSxY2sbTX</tt> (<a target="_blank" href="https://stefansundin.github.io/img/btc-qr.png">QR code</a>)</li>
       </ul>
-      <p>Contact me at <a fubar>stefaNStefansundinCom</a> if none of the above work.</p>
+      <p>Contact me at <a fubar>stefaNStefansundinCom</a> if none of the above work. <noscript>This email address is de-obfuscated if you allow JavaScript.</noscript></p>
     </div>
 
 
@@ -153,12 +162,11 @@ form[action="/go"] input.btn {
 
     <p>Made by <a href="https://stefansundin.github.io/">Stefan Sundin</a>.</p>
 
-    <div class="share">
+    <div class="text-center mt-5 javascript">
       <iframe src="https://ghbtns.com/github-btn.html?user=stefansundin&amp;repo=github-activity&amp;type=watch&amp;count=true&amp;size=large" allowtransparency="true" frameborder="0" scrolling="0" width="155" height="30"></iframe>
     </div>
   </div>
 
-  <script src="https://stefansundin.github.io/js/fubar.js"></script>
   <script src="https://stefansundin.github.io/js/main.js"></script>
 </body>
 </html>
