@@ -85,6 +85,12 @@ get "/token/*" do
     return "Could not decrypt token, sorry."
   end
 
+  # https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/
+  if !access_token.start_with?("gho_")
+    status 400
+    return "This URL is using a legacy token. Please re-authenticate and use the new URL."
+  end
+
   response = GitHub.graphql(:authed_first_page, nil, access_token)
   if response.code == 401
     status response.code
