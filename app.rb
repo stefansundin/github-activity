@@ -76,7 +76,8 @@ get "/:user.xml" do |user|
   erb :feed
 end
 
-get "/token/*" do |token|
+get "/token/*" do
+  token = env["REQUEST_PATH"]["/token/".length..]
   begin
     access_token = token.decrypt(:symmetric, password: ENV["ENCRYPTION_KEY"])
   rescue
