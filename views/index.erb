@@ -89,17 +89,21 @@ form[action="/go"] {
     </div>
 
     <script>
+    const input_username = document.getElementById("username");
+    const input_url = document.getElementById("url");
+    const button_open = document.getElementById("open");
+    const button_copy = document.getElementById("copy");
     function update() {
-      const username = document.getElementById("username").value || "your_username";
+      const username = input_username.value || "your_username";
       const url = `${window.location.origin}/${username}.xml`;
-      document.getElementById("url").value = url;
-      document.getElementById("open").href = url;
+      input_url.value = url;
+      button_open.href = url;
     }
-    document.getElementById("username").addEventListener("input", update);
+    input_username.addEventListener("input", update);
     update();
-    document.getElementById("copy").addEventListener("click", function(e) {
-      document.getElementById("url").select();
-      document.execCommand("copy");
+    button_copy.addEventListener("click", function(e) {
+      input_url.select();
+      navigator.clipboard.writeText(input_url.value);
     });
     </script>
 
