@@ -105,6 +105,18 @@ form[action="/go"] {
       input_url.select();
       navigator.clipboard.writeText(input_url.value);
     });
+    input_username.addEventListener("keydown", function(e) {
+      if (e.keyCode === 13) {
+        e.preventDefault();
+        button_copy.click();
+      }
+    });
+    input_url.addEventListener("keydown", function(e) {
+      if (e.keyCode === 13) {
+        e.preventDefault();
+        button_open.click();
+      }
+    });
     </script>
 
     <%- if ENV.key?("GITHUB_CLIENT_ID") && ENV.key?("GITHUB_CLIENT_SECRET") && ENV.key?("ENCRYPTION_KEY") -%>
