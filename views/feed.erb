@@ -10,13 +10,13 @@
 <%- @comments.each do |c| -%>
 
   <entry>
-    <id>gist:comment:<%= "#{c["comment_id"]}:#{c["lastEditedAt"]}" %></id>
+    <id>gist:comment:<%= "#{c["databaseId"]}:#{c["lastEditedAt"]}" %></id>
     <title>Comment by <%= c["author"]["login"] || "[deleted]" %></title>
-    <link href="https://gist.github.com/<%= "#{@user}/#{c["gist_id"]}#gistcomment-#{c["comment_id"]}" %>" />
+    <link href="https://gist.github.com/<%= "#{@user}/#{c["gist_name"]}#gistcomment-#{c["databaseId"]}" %>" />
     <updated><%= c["lastEditedAt"] %></updated>
     <author><name><%= c["author"]["login"] || "[deleted]" %></name></author>
     <content type="html">
-&lt;p>User <%= c["author"]["login"] || "[deleted]" %> commented on &lt;a href="https://gist.github.com/<%= "#{@user}/#{c["gist_id"]}" %>"><%= c["gist_id"] %>&lt;/a> at <%= format_date(c["createdAt"]) %>:&lt;/p>
+&lt;p>User <%= c["author"]["login"] || "[deleted]" %> commented on &lt;a href="https://gist.github.com/<%= "#{@user}/#{c["gist_name"]}" %>"><%= c["gist_name"] %>&lt;/a> at <%= format_date(c["createdAt"]) %>:&lt;/p>
 &lt;pre><%= CGI.escapeHTML(c["body"]).gsub(/&([lg])t;/, '&amp;\1t;') %>&lt;/pre>
     </content>
   </entry>

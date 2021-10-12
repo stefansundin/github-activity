@@ -39,9 +39,10 @@ class GitHub
               endCursor
             }
             nodes {
+              name
               comments(last: 5) {
                 nodes {
-                  id
+                  databaseId
                   createdAt
                   lastEditedAt
                   body
@@ -67,9 +68,10 @@ class GitHub
               endCursor
             }
             nodes {
+              name
               comments(last: 5) {
                 nodes {
-                  id
+                  databaseId
                   createdAt
                   lastEditedAt
                   body
@@ -96,9 +98,10 @@ class GitHub
               endCursor
             }
             nodes {
+              name
               comments(last: 5) {
                 nodes {
-                  id
+                  databaseId
                   createdAt
                   lastEditedAt
                   body
@@ -124,9 +127,10 @@ class GitHub
               endCursor
             }
             nodes {
+              name
               comments(last: 5) {
                 nodes {
-                  id
+                  databaseId
                   createdAt
                   lastEditedAt
                   body
@@ -195,6 +199,7 @@ class GitHub
   def self.process_gists(gists, user)
     gists["nodes"].map do |gist|
       gist["comments"]["nodes"].reject do |comment|
+        comment["gist_name"] = gist["name"]
         # author can be null.. probably if a user was deleted
         comment["author"] != nil && comment["author"]["login"] == user
       end
@@ -204,11 +209,6 @@ class GitHub
       end
       comment["lastEditedAt"] ||= comment["createdAt"]
       comment["updated_at"] = Time.parse(comment["lastEditedAt"])
-      comment["id"] = Base64.decode64(comment["id"])
-      # example id: 011:GistCommenta99bbfb6cda873d14fd2:2386850
-      id_parts = comment["id"].split(":")
-      comment["gist_id"] = id_parts[1]["GistComment".length..-1]
-      comment["comment_id"] = id_parts[2]
     end
   end
 end

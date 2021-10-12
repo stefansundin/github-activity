@@ -2,7 +2,6 @@
 # export RUBYOPT=--enable-frozen-string-literal
 
 require "sinatra"
-require "base64"
 require "./config/application"
 
 def format_date(date)
