@@ -1,12 +1,3 @@
-# GitHub Activity RSS Feed
-
-You can use this app freely at [gh-rss.herokuapp.com](https://gh-rss.herokuapp.com/).
-
-
-## Roll your own
-
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/stefansundin/github-activity)
-
 ### Configuration
 
 - `GITHUB_TOKEN` is required for access to the GitHub GraphQL API. This is used for non-authenticated access. Generate a token [here](https://github.com/settings/tokens) with no scopes.
