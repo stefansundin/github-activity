@@ -69,6 +69,12 @@ form[action="/go"] {
   </header>
 
   <div class="container">
+    <%- if ENV["WEBSITE_NOTICE"] -%>
+    <div class="alert alert-warning" role="alert">
+      <%= ENV["WEBSITE_NOTICE"] %>
+    </div>
+    <%- end -%>
+
     <noscript>
       <form class="input-group mx-auto mt-5 mb-3" method="get" action="/go">
         <input class="form-control" type="search" name="q" placeholder="Your GitHub username" pattern="[a-zA-Z0-9\-]+" title="Input a GitHub username, not a url.">
