@@ -12,7 +12,7 @@ gem "addressable"
 gem "rack-ssl-enforcer"
 gem "clogger"
 gem "encrypted_strings"
-gem "prometheus-client", require: "prometheus/middleware/exporter", git: "https://github.com/stefansundin/prometheus-client.git", branch: "master"
+gem "prometheus-client", require: "prometheus/middleware/exporter"
 
 group :production do
   gem "airbrake", require: false

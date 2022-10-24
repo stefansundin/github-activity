@@ -5,12 +5,12 @@ store_settings = {}
 if ENV["WEB_CONCURRENCY"]
   require "prometheus/client/data_stores/direct_file_store"
   app_path = File.expand_path("../../..", __FILE__)
-  Prometheus::Client.config.data_store = Prometheus::Client::DataStores::DirectFileStore.new(dir: "#{app_path}/tmp/prometheus/", clean_dir: true)
+  Prometheus::Client.config.data_store = Prometheus::Client::DataStores::DirectFileStore.new(dir: "#{app_path}/tmp/prometheus/")
   store_settings[:aggregation] = :most_recent
 end
 
-prometheus = Prometheus::Client.registry(labels: %i[app_version], preset_labels: { app_version: ENV["HEROKU_RELEASE_VERSION"] || "dev" })
+prometheus = Prometheus::Client.registry
 
 $metrics = {
-  ratelimit_remaining: prometheus.gauge(:ratelimit_remaining, store_settings: store_settings, docstring: "Remaining GitHub ratelimit."),
+  ratelimit_remaining: prometheus.gauge(:ratelimit_remaining, store_settings: store_settings, docstring: "Remaining GitHub ratelimit.", labels: %i[app_version], preset_labels: { app_version: ENV["HEROKU_RELEASE_VERSION"] || "dev" }),
 }
